@@ -33,7 +33,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="wave-bg font-sans">
     <!-- Header -->
     <header>
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -68,24 +68,23 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-6">
         <div class="flex items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 bg-gradient-azure bg-clip-text text-transparent">Emergency Services</h2>
+            <h2 class="text-2xl font-bold text-gray-800 gradient-text">Emergency Services</h2>
             <span class="ml-3 bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Important</span>
         </div>
 
         <!-- Live Location Map Section -->
-        <section class="live-location mb-6">
-            <div class="location-details">
-                <h2>Your Current Location</h2>
-                <p id="location-name" class="location-name">Fetching address...</p>
-                <p class="text-sm text-gray-700 mt-2">This helps find the nearest services to you</p>
-                <div class="mt-4">
-                    <button id="refresh-location" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors duration-200">
-                        <i class="fas fa-sync-alt mr-2"></i> Refresh Location
-                    </button>
-                </div>
-            </div>
-            <div class="map-container">
+        <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 gradient-text">Your Current Location</h3>
+            <p id="location-status" class="text-sm text-gray-700 mt-2 mb-4">This helps find the nearest emergency services to you</p>
+            
+            <div class="map-container h-64 mb-4">
                 <div id="map"></div>
+            </div>
+            
+            <div class="flex justify-end">
+                <button id="refresh-location" class="px-4 py-2 bg-gradient-info text-white rounded-md transition-all duration-300 hover:shadow-md">
+                    <i class="fas fa-sync-alt mr-2"></i> Refresh Location
+                </button>
             </div>
         </section>
         
@@ -412,9 +411,113 @@
 
     <!-- Scripts -->
     <script src="js/main.js"></script>
-    <script src="js/leaflet-location.js"></script>
+    <script>
+        // BRAC University coordinates (default location)
+        const BRAC_UNIVERSITY_LAT = 23.7805;
+        const BRAC_UNIVERSITY_LNG = 90.4064;
+        
+        // Initialize the map
+        let map = L.map('map').setView([BRAC_UNIVERSITY_LAT, BRAC_UNIVERSITY_LNG], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        
+        // Variables for user location marker and accuracy circle
+        let marker, circle, zoomed;
+        
+        // Get user's location
+        navigator.geolocation.getCurrentPosition(success, error);
+        
+        // Success function when location is retrieved
+        function success(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            
+            // Update status text
+            document.getElementById('location-status').innerHTML = 
+                `<i class="fas fa-map-marker-alt text-red-500 mr-1"></i> Location found: Latitude ${lat.toFixed(4)}, Longitude ${lng.toFixed(4)}`;
+            
+            // Remove existing markers if they exist
+            if (marker) {
+                map.removeLayer(marker);
+                map.removeLayer(circle);
+            }
+            
+            // Add marker for user's location
+            marker = L.marker([lat, lng]).addTo(map)
+                .bindPopup('Your Location')
+                .openPopup();
+                
+            // Add accuracy circle
+            circle = L.circle([lat, lng], { 
+                radius: accuracy,
+                color: '#ef4444',
+                fillColor: '#fee2e2',
+                fillOpacity: 0.3
+            }).addTo(map);
+            
+            // Zoom to fit the circle bounds
+            if (!zoomed) {
+                zoomed = map.fitBounds(circle.getBounds());
+            }
+            
+            // Find nearby hospitals
+            findNearbyHospitals(lat, lng);
+        }
+        
+        // Error function when location retrieval fails
+        function error(err) {
+            if (err.code === 1) {
+                document.getElementById('location-status').innerHTML = 
+                    '<i class="fas fa-exclamation-triangle text-amber-500 mr-1"></i> Please allow location access for better emergency services.';
+            } else {
+                document.getElementById('location-status').innerHTML = 
+                    '<i class="fas fa-exclamation-triangle text-amber-500 mr-1"></i> Cannot get your current location. Using default location instead.';
+                
+                // Add marker for default location (BRAC University)
+                marker = L.marker([BRAC_UNIVERSITY_LAT, BRAC_UNIVERSITY_LNG]).addTo(map)
+                    .bindPopup('Default Location: BRAC University')
+                    .openPopup();
+            }
+        }
+        
+        // Refresh location when button is clicked
+        document.getElementById('refresh-location').addEventListener('click', function() {
+            document.getElementById('location-status').innerHTML = 
+                '<i class="fas fa-spinner fa-spin text-blue-500 mr-1"></i> Fetching your location...';
+            navigator.geolocation.getCurrentPosition(success, error);
+        });
+        
+        // Emergency call button
+        document.getElementById('emergency-call').addEventListener('click', function() {
+            window.location.href = 'tel:999';
+        });
+        
+        // Placeholder function for finding nearby hospitals
+        function findNearbyHospitals(lat, lng) {
+            // This would be implemented with a real API in production
+            // For demonstration, we'll add some sample hospital markers
+            
+            // DMCH (Dhaka Medical College Hospital)
+            L.marker([23.7256, 90.3996])
+                .addTo(map)
+                .bindPopup('<strong>Dhaka Medical College Hospital</strong><br>Emergency Department')
+                .openPopup();
+                
+            // Bangladesh Medical
+            L.marker([23.7608, 90.3886])
+                .addTo(map)
+                .bindPopup('<strong>Bangladesh Medical</strong><br>24/7 Emergency Services');
+                
+            // Square Hospital
+            L.marker([23.7522, 90.3765])
+                .addTo(map)
+                .bindPopup('<strong>Square Hospital</strong><br>Emergency & Trauma Center');
+        }
+    </script>
     <script src="js/emergency-contact.js"></script>
-    <script src="js/theme-switcher.js"></script>
 </body>
 </html> 
 

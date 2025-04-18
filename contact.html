@@ -10,8 +10,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Maps JavaScript API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMaps" async defer></script>
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <style>
@@ -329,16 +330,20 @@
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 gradient-text">Our Location</h3>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <div class="map-container">
-                        <div id="our-location-map"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Map Section -->
+                <div class="md:col-span-2">
+                    <div class="bg-gray-50 rounded-lg border border-gray-100 hover:border-blue-100 transition-all duration-300 hover:shadow-md h-full">
+                        <div class="map-container" style="height: 400px; border-radius: 0.5rem; overflow: hidden;">
+                            <div id="our-location-map" style="height: 100%; width: 100%;"></div>
+                        </div>
                     </div>
                 </div>
                 
+                <!-- Location Info -->
                 <div>
-                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-100 h-full">
-                        <h4 class="font-medium mb-3">Zentorra Medicare Headquarters</h4>
+                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-100 hover:border-blue-100 transition-all duration-300 hover:shadow-md h-full">
+                        <h4 class="font-medium mb-3 gradient-text">Zentorra Medicare Headquarters</h4>
                         <div class="flex items-start mb-3">
                             <div class="text-blue-500 mr-3 flex-shrink-0">
                                 <i class="fas fa-map-marker-alt"></i>
@@ -477,126 +482,126 @@
         const BRAC_UNIVERSITY_LAT = 23.7805;
         const BRAC_UNIVERSITY_LNG = 90.4064;
         
-        // Google Maps initialization function
-        function initMaps() {
-            // Initialize user's location map
-            const locationMapOptions = {
-                zoom: 13,
-                center: { lat: BRAC_UNIVERSITY_LAT, lng: BRAC_UNIVERSITY_LNG },
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                mapTypeControl: false,
-                streetViewControl: false
-            };
+        // Initialize user's location map
+        let locationMap = L.map('location-map').setView([BRAC_UNIVERSITY_LAT, BRAC_UNIVERSITY_LNG], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(locationMap);
+        
+        // Initialize our location map (Zentorra Medicare)
+        let ourLocationMap = L.map('our-location-map').setView([BRAC_UNIVERSITY_LAT, BRAC_UNIVERSITY_LNG], 15);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(ourLocationMap);
+        
+        // Add marker for Zentorra Medicare
+        L.marker([BRAC_UNIVERSITY_LAT, BRAC_UNIVERSITY_LNG])
+            .addTo(ourLocationMap)
+            .bindPopup('<strong>Zentorra Medicare Headquarters</strong><br>66 Mohakhali, BRAC University Campus')
+            .openPopup();
             
-            const locationMap = new google.maps.Map(document.getElementById('location-map'), locationMapOptions);
-            
-            // Try to get user's location
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const userLat = position.coords.latitude;
-                    const userLng = position.coords.longitude;
-                    
-                    const userPosition = new google.maps.LatLng(userLat, userLng);
-                    locationMap.setCenter(userPosition);
-                    locationMap.setZoom(15);
-                    
-                    // Add marker for user's location
-                    const userMarker = new google.maps.Marker({
-                        position: userPosition,
-                        map: locationMap,
-                        title: 'Your Location',
-                        animation: google.maps.Animation.DROP
-                    });
-                    
-                    // Info window for user's location
-                    const userInfoWindow = new google.maps.InfoWindow({
-                        content: '<div class="p-2"><strong>Your Location</strong></div>'
-                    });
-                    
-                    userMarker.addListener('click', function() {
-                        userInfoWindow.open(locationMap, userMarker);
-                    });
-                    
-                    // Automatically open info window
-                    userInfoWindow.open(locationMap, userMarker);
-                    
-                    // Add nearby hospitals and medical facilities (would require Places API)
-                    // This is a placeholder for that functionality
-                    findNearbyMedicalFacilities(locationMap, userPosition);
-                    
-                }, function() {
-                    // Error handling if user denies location or it's not available
-                    console.log('Could not get user location');
-                    
-                    // Show default map centered on BRAC University
-                    const defaultPosition = new google.maps.LatLng(BRAC_UNIVERSITY_LAT, BRAC_UNIVERSITY_LNG);
-                    locationMap.setCenter(defaultPosition);
-                    
-                    // Add marker for default position
-                    new google.maps.Marker({
-                        position: defaultPosition,
-                        map: locationMap,
-                        title: 'Default Location'
-                    });
+        // Add nearby hospitals (example data)
+        const hospitals = [
+            {
+                name: "Apollo Hospital Dhaka",
+                lat: 23.7997,
+                lng: 90.4108,
+                address: "Plot # 81, Block # E, Bashundhara R/A"
+            },
+            {
+                name: "United Hospital Limited",
+                lat: 23.8026,
+                lng: 90.4137,
+                address: "Plot # 15, Road # 71, Gulshan"
+            },
+            {
+                name: "Square Hospitals Ltd",
+                lat: 23.7538,
+                lng: 90.3838,
+                address: "18/F, Bir Uttam Qazi Nuruzzaman Sarak"
+            }
+        ];
+        
+        // Add hospital markers
+        hospitals.forEach(hospital => {
+            L.marker([hospital.lat, hospital.lng])
+                .addTo(ourLocationMap)
+                .bindPopup(`<strong>${hospital.name}</strong><br>${hospital.address}`)
+                .on('mouseover', function(e) {
+                    this.openPopup();
                 });
+        });
+        
+        // Variables for user location marker and accuracy circle
+        let marker, circle, zoomed;
+        
+        // Get user's location
+        navigator.geolocation.getCurrentPosition(success, error);
+        
+        // Success function when location is retrieved
+        function success(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            
+            // Remove existing markers if they exist
+            if (marker) {
+                locationMap.removeLayer(marker);
+                locationMap.removeLayer(circle);
             }
             
-            // Initialize our location map (Zentorra Medicare near BRAC University)
-            const zentorraPosition = new google.maps.LatLng(BRAC_UNIVERSITY_LAT, BRAC_UNIVERSITY_LNG);
+            // Add marker for user's location
+            marker = L.marker([lat, lng]).addTo(locationMap)
+                .bindPopup('<strong>Your Location</strong>')
+                .openPopup();
+                
+            // Add accuracy circle
+            circle = L.circle([lat, lng], { radius: accuracy }).addTo(locationMap);
             
-            const ourLocationMapOptions = {
-                zoom: 15,
-                center: zentorraPosition,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                mapTypeControl: false
-            };
+            // Zoom to fit the circle bounds
+            if (!zoomed) {
+                zoomed = locationMap.fitBounds(circle.getBounds());
+            }
             
-            const ourLocationMap = new google.maps.Map(document.getElementById('our-location-map'), ourLocationMapOptions);
-            
-            // Add marker for our office location
-            const zentorraMarker = new google.maps.Marker({
-                position: zentorraPosition,
-                map: ourLocationMap,
-                title: 'Zentorra Medicare Headquarters',
-                animation: google.maps.Animation.DROP
-            });
-            
-            // Info window for our location
-            const zentorraInfoWindow = new google.maps.InfoWindow({
-                content: `
-                    <div class="p-3">
-                        <h3 class="font-bold text-blue-600">Zentorra Medicare</h3>
-                        <p>66 Mohakhali<br>BRAC University Campus<br>Dhaka 1212, Bangladesh</p>
-                        <p class="mt-2"><a href="tel:+8801700000000" class="text-blue-500">+880 1700 000000</a></p>
-                    </div>
-                `
-            });
-            
-            zentorraMarker.addListener('click', function() {
-                zentorraInfoWindow.open(ourLocationMap, zentorraMarker);
-            });
-            
-            // Automatically open info window
-            zentorraInfoWindow.open(ourLocationMap, zentorraMarker);
+            // Add marker on our location map too
+            L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: 'user-location-marker',
+                    html: '<div style="background-color: #3b82f6; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+                    iconSize: [12, 12],
+                    iconAnchor: [6, 6]
+                })
+            }).addTo(ourLocationMap)
+            .bindPopup('<strong>Your Location</strong>');
         }
         
-        // Placeholder function for finding nearby medical facilities
-        // In a real implementation, you would use the Places API
-        function findNearbyMedicalFacilities(map, userPosition) {
-            // This would be implemented with Places API
-            console.log('Finding nearby medical facilities...');
+        // Error function when location retrieval fails
+        function error(err) {
+            if (err.code === 1) {
+                alert("Please allow location access.");
+            } else {
+                alert("Cannot get your current location. Using default location instead.");
+            }
         }
+        
+        // Direction button functionality
+        document.getElementById('get-directions').addEventListener('click', function() {
+            // Use Google Maps directions API
+            if (marker) {
+                const userLat = marker.getLatLng().lat;
+                const userLng = marker.getLatLng().lng;
+                window.open(`https://www.google.com/maps/dir/${userLat},${userLng}/${BRAC_UNIVERSITY_LAT},${BRAC_UNIVERSITY_LNG}`);
+            } else {
+                window.open(`https://www.google.com/maps/dir//${BRAC_UNIVERSITY_LAT},${BRAC_UNIVERSITY_LNG}`);
+            }
+        });
         
         // Function to handle phone calls
         function callNumber(phoneNumber) {
             window.location.href = `tel:${phoneNumber}`;
         }
-        
-        // Handle directions button
-        document.getElementById('get-directions').addEventListener('click', function() {
-            // Open Google Maps directions to our location (BRAC University)
-            window.open(`https://www.google.com/maps/dir/?api=1&destination=${BRAC_UNIVERSITY_LAT},${BRAC_UNIVERSITY_LNG}&destination_place_id=Zentorra+Medicare+Headquarters`, '_blank');
-        });
         
         // Handle contact form submission
         document.getElementById('contact-form').addEventListener('submit', function(e) {
@@ -620,4 +625,5 @@
     </script>
 </body>
 </html> 
+
 
