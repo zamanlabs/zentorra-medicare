@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Tracker - Zentorra Medicare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/symptom-tracker.css">
+    <link rel="stylesheet" href="css/azure-theme.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Additional styles that don't overlap with symptom-tracker.css */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Notification styles */
+        .notification {
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.fade-out {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="menu-toggle" class="text-white hover:text-blue-100 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <h1 class="ml-4 text-xl font-bold">Zentorra Medicare</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="auth.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+                <h2 class="text-2xl font-bold text-gray-800 bg-gradient-azure bg-clip-text text-transparent">Symptom Tracker</h2>
+                <span class="ml-3 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Health Tool</span>
+            </div>
+            <div>
+                <button id="view-toggle" data-current-view="table" class="btn-action btn-secondary">
+                    <i class="fas fa-list mr-1"></i> List View
+                </button>
+            </div>
+        </div>
+
+        <!-- Symptom Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white rounded-lg shadow-md p-4 symptom-card">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-lg font-semibold text-gray-800">Total Symptoms</h3>
+                    <i class="fas fa-clipboard-list text-azure opacity-80"></i>
+                </div>
+                <p class="text-3xl font-bold text-azure">0</p>
+                <p class="text-sm text-gray-500 mt-1">Logged symptoms</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 symptom-card">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-lg font-semibold text-gray-800">Most Recent</h3>
+                    <i class="fas fa-history text-azure opacity-80"></i>
+                </div>
+                <div class="flex items-center mb-1">
+                    <span class="symptom-tag mr-2">None</span>
+                    <span class="text-sm text-gray-500">0/10 severity</span>
+                </div>
+                <p class="text-sm text-gray-500">No date recorded</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 symptom-card">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-lg font-semibold text-gray-800">Tracking Since</h3>
+                    <i class="fas fa-calendar-check text-azure opacity-80"></i>
+                </div>
+                <p class="text-3xl font-bold text-azure">0 days</p>
+                <p class="text-sm text-gray-500 mt-1">No tracking started</p>
+            </div>
+        </div>
+
+        <!-- Symptom Tracking Form -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6 symptom-card">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Log New Symptom</h3>
+            <form id="symptom-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="symptom-type" class="block text-sm font-medium text-gray-700 mb-1">Symptom Type</label>
+                        <select id="symptom-type" name="symptom-type" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            <option value="">Select a symptom</option>
+                            <option value="headache">Headache</option>
+                            <option value="nausea">Nausea</option>
+                            <option value="fatigue">Fatigue</option>
+                            <option value="fever">Fever</option>
+                            <option value="cough">Cough</option>
+                            <option value="muscle-pain">Muscle Pain</option>
+                            <option value="shortness-of-breath">Shortness of Breath</option>
+                            <option value="other">Other (specify)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="other-symptom-container" class="hidden">
+                        <label for="other-symptom" class="block text-sm font-medium text-gray-700 mb-1">Specify Symptom</label>
+                        <input type="text" id="other-symptom" name="other-symptom" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" placeholder="Enter your symptom">
+                    </div>
+
+                    <div>
+                        <label for="severity" class="block text-sm font-medium text-gray-700 mb-1">Severity (1-10)</label>
+                        <div class="flex items-center space-x-3">
+                            <input type="range" min="1" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="severity">
+                            <span id="severity-value" class="text-sm font-medium text-gray-700 w-12 text-right">5/10</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="symptom-date" class="block text-sm font-medium text-gray-700 mb-1">Date & Time</label>
+                        <input type="datetime-local" id="symptom-date" name="symptom-date" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+                    <textarea id="notes" name="notes" rows="3" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" placeholder="Add details about your symptom..."></textarea>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" class="btn-action btn-primary">
+                        <i class="fas fa-plus mr-1"></i> Add Symptom
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table View Section -->
+        <div id="table-view" class="bg-white rounded-lg shadow-md p-6 symptom-card">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800 bg-gradient-azure bg-clip-text text-transparent">Symptom History</h3>
+                <div class="flex space-x-2">
+                    <button id="filter-button" class="btn-action btn-secondary">
+                        <i class="fas fa-filter mr-1"></i> Filter
+                    </button>
+                    <button id="trends-button" class="btn-action btn-secondary">
+                        <i class="fas fa-chart-line mr-1"></i> View Trends
+                    </button>
+                    <button id="share-button" class="btn-action btn-primary">
+                        <i class="fas fa-share-alt mr-1"></i> Share
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty state message -->
+            <div id="empty-state" class="empty-state hidden">
+                <i class="fas fa-notes-medical"></i>
+                <p class="text-lg font-medium">No symptoms logged yet</p>
+                <p class="text-sm">Use the form above to start tracking your symptoms</p>
+            </div>
+
+            <div class="overflow-x-auto symptom-history-table">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symptom</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Severity</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="symptom-history">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- List View Section (alternative to table) -->
+        <div id="list-view" class="hidden">
+            <!-- Will be populated by JavaScript -->
+            <div id="symptoms-list-view"></div>
+        </div>
+        
+        <!-- Trends Visualization Section -->
+        <div id="trends-visualization" class="bg-white rounded-lg shadow-md p-6 mt-6 hidden">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Symptom Trends</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="border rounded-lg p-4">
+                    <h4 class="text-md font-medium text-gray-700 mb-3">Symptom Frequency</h4>
+                    <div id="frequency-chart" class="h-64">
+                        <!-- Chart will be rendered here -->
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <h4 class="text-md font-medium text-gray-700 mb-3">Severity Over Time</h4>
+                    <div id="severity-chart" class="h-64">
+                        <!-- Chart will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Side Panel Navigation -->
+    <div id="side-panel" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-4 border-b bg-gradient-azure">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Zentorra Medicare</h2>
+                <button id="close-menu" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <nav class="p-4">
+            <ul class="space-y-3">
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="index.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-home w-6"></i>
+                        <span class="ml-2">Dashboard</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-user w-6"></i>
+                        <span class="ml-2">Profile</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md bg-blue-50">
+                    <a href="symptom-tracker.html" class="flex items-center text-azure">
+                        <i class="fas fa-chart-simple w-6"></i>
+                        <span class="ml-2">Symptom Tracker</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="medication.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-pills w-6"></i>
+                        <span class="ml-2">Medication</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="telemedicine.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-video w-6"></i>
+                        <span class="ml-2">Telemedicine</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="contact.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-address-book w-6"></i>
+                        <span class="ml-2">Contact</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="emergency.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-hospital w-6"></i>
+                        <span class="ml-2">Emergency Services</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="chat.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-message w-6"></i>
+                        <span class="ml-2">AI Assistant</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="about.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-circle-info w-6"></i>
+                        <span class="ml-2">About</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-6 pt-6 border-t">
+                <ul class="space-y-3">
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-gear w-6"></i>
+                            <span class="ml-2">Settings</span>
+                        </a>
+                    </li>
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-right-from-bracket w-6"></i>
+                            <span class="ml-2">Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="share-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Share Symptom Report</h3>
+                <button id="close-share-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Share with</label>
+                    <select id="share-recipient" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        <option value="doctor">My Doctor</option>
+                        <option value="caregiver">Caregiver</option>
+                        <option value="family">Family Member</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Format</label>
+                    <div class="flex space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="format" value="pdf" checked class="form-radio text-azure">
+                            <span class="ml-2">PDF</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="format" value="csv" class="form-radio text-azure">
+                            <span class="ml-2">CSV</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <input type="date" id="share-from-date" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                        <div>
+                            <input type="date" id="share-to-date" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button id="generate-report" class="btn-action btn-primary">
+                        <i class="fas fa-share-alt mr-1"></i> Share Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filter-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Filter Symptoms</h3>
+                <button id="close-filter-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Symptom Type</label>
+                    <select id="filter-symptom-type" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        <option value="">All Symptoms</option>
+                        <option value="headache">Headache</option>
+                        <option value="nausea">Nausea</option>
+                        <option value="fatigue">Fatigue</option>
+                        <option value="fever">Fever</option>
+                        <option value="cough">Cough</option>
+                        <option value="muscle-pain">Muscle Pain</option>
+                        <option value="shortness-of-breath">Shortness of Breath</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Severity</label>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm text-gray-600">Min</span>
+                        <input type="range" min="1" max="10" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="filter-min-severity">
+                        <span id="filter-min-severity-value" class="text-sm font-medium text-gray-700 w-8 text-right">1</span>
+                    </div>
+                    <div class="flex items-center space-x-3 mt-2">
+                        <span class="text-sm text-gray-600">Max</span>
+                        <input type="range" min="1" max="10" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="filter-max-severity">
+                        <span id="filter-max-severity-value" class="text-sm font-medium text-gray-700 w-8 text-right">10</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <input type="date" id="filter-from-date" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                        <div>
+                            <input type="date" id="filter-to-date" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button id="apply-filter" class="btn-action btn-primary">
+                        <i class="fas fa-filter mr-1"></i> Apply Filter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/symptom-tracker.js"></script>
+    <script src="js/theme-switcher.js"></script>
+</body>
+</html> 
+

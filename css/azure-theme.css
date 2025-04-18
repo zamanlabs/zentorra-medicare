@@ -1,0 +1,238 @@
+/* Serene Azure Theme for Zentorra Medicare
+ * Primary: #3a86ff (#1a56b0 for dark mode)
+ * Secondary: #4cc9f0 (#08a4d4 for dark mode)
+ * Text: #1e293b (#f1f5f9 for dark mode)
+ * Neutral: #f1f5f9 (#1e293b for dark mode)
+ * Gradient: bg-gradient-to-r from-blue-500 to-cyan-400
+ */
+
+:root {
+  --primary: #3a86ff;
+  --primary-dark: #1a56b0;
+  --secondary: #4cc9f0;
+  --secondary-dark: #08a4d4;
+  --text: #1e293b;
+  --text-light: #475569;
+  --text-dark-mode: #f1f5f9;
+  --neutral: #f1f5f9;
+  --neutral-dark: #1e293b;
+  
+  /* Enhanced Background Color Scheme */
+  --bg-primary: #f0f7ff;
+  --bg-secondary: #f5faff;
+  --bg-tertiary: #e6f2ff;
+  --card-bg: #ffffff;
+  --card-bg-hover: #fafcff;
+  --card-border: rgba(58, 134, 255, 0.08);
+  --sidebar-bg: linear-gradient(to bottom, #ffffff, #f8faff);
+  --sidebar-hover: rgba(58, 134, 255, 0.08);
+  --shadow-sm: 0 2px 4px rgba(58, 134, 255, 0.03), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px rgba(58, 134, 255, 0.05), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px rgba(58, 134, 255, 0.07), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Base styling overrides */
+body {
+  background-color: var(--bg-primary);
+  background-image: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+}
+
+header {
+  background: linear-gradient(to right, #3a86ff, #4cc9f0);
+  color: white;
+}
+
+/* Button styling */
+.btn-primary, 
+.bg-blue-500,
+button[type="submit"],
+a.bg-blue-500 {
+  background-color: var(--primary);
+}
+
+.btn-primary:hover, 
+.hover\:bg-blue-600:hover,
+a.bg-blue-500:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-dark);
+}
+
+/* Text coloring */
+.text-blue-500 {
+  color: var(--primary);
+}
+
+.text-blue-600 {
+  color: var(--primary-dark);
+}
+
+/* Backgrounds */
+.bg-blue-50 {
+  background-color: #eef5ff;
+}
+
+.bg-blue-100 {
+  background-color: #dbeafe;
+}
+
+/* Gradient background */
+.app-gradient-bg {
+  background: linear-gradient(to right, #3a86ff, #4cc9f0);
+  background-size: 200% 100%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+.bg-gradient-azure {
+  background: linear-gradient(to right, #3a86ff, #4cc9f0);
+}
+
+@keyframes gradient-shift {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* Card styling */
+.bg-white, 
+.card,
+.bg-white.rounded-lg.shadow-md {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bg-white:hover, 
+.card:hover,
+.bg-white.rounded-lg.shadow-md:hover {
+  background-color: var(--card-bg-hover);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+/* Focus states */
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: var(--primary);
+}
+
+.focus\:border-blue-500:focus {
+  border-color: var(--primary);
+}
+
+/* Sidebar Panel styling */
+#side-panel {
+  background: var(--sidebar-bg);
+  box-shadow: 0 0 20px rgba(58, 134, 255, 0.08);
+}
+
+#side-panel nav li a:hover {
+  background-color: var(--sidebar-hover);
+}
+
+/* Menu toggle (preserve functionality) */
+#menu-toggle, 
+#close-menu {
+  /* No changes to preserve functionality */
+}
+
+/* Section backgrounds */
+.contacts-section,
+.sos-section,
+section.live-location {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Table backgrounds */
+table tr:nth-child(even) {
+  background-color: var(--bg-tertiary);
+}
+
+table tr:hover {
+  background-color: var(--bg-secondary);
+}
+
+/* Form element styling */
+input,
+select,
+textarea {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background-color: var(--card-bg);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.1);
+}
+
+/* Alert and notification styling */
+.notification,
+.alert {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Card component color refinements */
+.bg-gray-50 {
+  background-color: var(--bg-tertiary);
+  border-color: var(--card-border);
+}
+
+/* Modal backgrounds */
+.modal-content,
+.dialog-content {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Enhanced background colors for categorical elements */
+.bg-blue-50, .bg-indigo-50, .bg-purple-50 {
+  background-color: rgba(58, 134, 255, 0.05);
+  border-color: rgba(58, 134, 255, 0.1);
+}
+
+.bg-green-50 {
+  background-color: rgba(76, 201, 240, 0.05);
+  border-color: rgba(76, 201, 240, 0.1);
+}
+
+.bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.1);
+}
+
+.bg-yellow-50 {
+  background-color: rgba(234, 179, 8, 0.05);
+  border-color: rgba(234, 179, 8, 0.1);
+}
+
+/* Container backgrounds */
+.container {
+  background-color: transparent;
+}
+
+/* Main content area refinements */
+main {
+  padding-bottom: 2rem;
+}
+
+/* Container corner styling */
+.rounded-lg {
+  overflow: hidden;
+} 

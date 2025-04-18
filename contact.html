@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Appointments - Zentorra Medicare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Leaflet map styles */
+        .map-container {
+            height: 250px;
+            width: 100%;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        #location-map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        #our-location-map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Sidebar transition improvements */
+        @media (max-width: 640px) {
+            #side-panel {
+                width: 75%;
+                max-width: 250px;
+            }
+            
+            #side-panel h2 {
+                font-size: 1rem;
+            }
+            
+            #side-panel nav a {
+                font-size: 0.875rem;
+                padding: 0.375rem 0.625rem;
+            }
+            
+            #side-panel nav a i {
+                font-size: 0.875rem;
+            }
+            
+            #side-panel nav .space-y-2 {
+                --tw-space-y-reverse: 0;
+                margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+                margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+            }
+        }
+        
+        /* Prevent content scrolling when menu is open */
+        body.overflow-hidden {
+            overflow: hidden;
+        }
+        
+        /* Better touch target areas for mobile */
+        @media (max-width: 640px) {
+            #side-panel nav a {
+                padding: 0.5rem 0.75rem;
+            }
+        }
+        
+        /* Improved focus styles for accessibility */
+        #menu-toggle:focus, #close-menu:focus, #side-panel nav a:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+        
+        /* Compact sidebar styles for all screen sizes */
+        #side-panel nav ul {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            gap: 0.125rem;
+        }
+        
+        #side-panel nav ul.space-y-2 {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+        }
+        
+        #side-panel nav a {
+            font-size: 0.95rem;
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+        }
+        
+        #side-panel nav a i {
+            font-size: 0.95rem;
+        }
+        
+        #side-panel .mt-4 {
+            margin-top: 1rem;
+        }
+        
+        #side-panel .pt-4 {
+            padding-top: 1rem;
+        }
+        
+        #side-panel nav .p-4 {
+            padding: 0.75rem;
+        }
+
+        /* Smooth scrolling styles for sidebar */
+        #side-panel {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+        }
+        
+        #side-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        #side-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        #side-panel::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 20px;
+        }
+        
+        #side-panel nav {
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+        }
+        
+        #side-panel nav::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        #side-panel nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        #side-panel nav::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="wave-bg font-sans">
+    <!-- Header -->
+    <header>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="menu-toggle" class="text-white hover:text-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-md p-2 transition-all duration-200" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <h1 class="ml-4 text-xl font-bold">Zentorra Medicare</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="auth.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 gradient-text">Contact & Appointments</h2>
+            <span class="ml-3 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Support</span>
+        </div>
+
+        <!-- Emergency Contact Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 gradient-text">Emergency Contact</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Ambulance Section -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-100 hover:border-red-100 transition-all duration-300 hover:shadow-md">
+                    <div class="flex items-center mb-3">
+                        <div class="rounded-full bg-gradient-danger p-3 text-white mr-3">
+                            <i class="fas fa-ambulance"></i>
+                        </div>
+                        <h4 class="font-medium">Ambulance</h4>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">For emergency ambulance services, call:</p>
+                    <button onclick="callNumber('999')" class="w-full bg-gradient-danger text-white py-2 rounded-md transition-all duration-300 hover:shadow-md">
+                        <i class="fas fa-phone-alt mr-2"></i> Call 999
+                    </button>
+                    <button onclick="callNumber('10622')" class="w-full bg-gradient-danger text-white py-2 rounded-md mt-2 transition-all duration-300 hover:shadow-md">
+                        <i class="fas fa-phone-alt mr-2"></i> Call 10622
+                    </button>
+                </div>
+                
+                <!-- Your Location Section -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-100 hover:border-blue-100 transition-all duration-300 hover:shadow-md">
+                    <div class="flex items-center mb-3">
+                        <div class="rounded-full bg-gradient-info p-3 text-white mr-3">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <h4 class="font-medium">Your Location</h4>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">Locate emergency services near you</p>
+                    <div class="map-container">
+                        <div id="location-map"></div>
+                    </div>
+                </div>
+                
+                <!-- Emergency Card Section -->
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-100 hover:border-purple-100 transition-all duration-300 hover:shadow-md">
+                    <div class="flex items-center mb-3">
+                        <div class="rounded-full bg-gradient-secondary p-3 text-white mr-3">
+                            <i class="fas fa-id-card-clip"></i>
+                        </div>
+                        <h4 class="font-medium">Emergency Card</h4>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">Access your emergency information card</p>
+                    <a href="emergency-card.html" class="block w-full bg-gradient-secondary text-white py-2 rounded-md text-center transition-all duration-300 hover:shadow-md">
+                        <i class="fas fa-eye mr-2"></i> View Emergency Card
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- Contact Form Section -->
+            <div class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 gradient-text">Contact Us</h3>
+                
+                <form id="contact-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                        <input type="text" id="subject" name="subject" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" required>
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors" required></textarea>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full md:w-auto bg-gradient-primary text-white py-2 px-6 rounded-md transition-all duration-300 hover:shadow-md">
+                            <i class="fas fa-paper-plane mr-2"></i> Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Contact Information Section -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 gradient-text">Contact Information</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="rounded-full bg-gradient-primary p-3 text-white mr-3 flex-shrink-0">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Email</h4>
+                            <a href="mailto:info@zentorramedicare.com" class="text-blue-600 hover:text-blue-800 transition-colors">info@zentorramedicare.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="rounded-full bg-gradient-success p-3 text-white mr-3 flex-shrink-0">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Phone</h4>
+                            <p class="text-gray-700">+1 (555) 123-4567</p>
+                            <p class="text-gray-700">+1 (555) 987-6543</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="rounded-full bg-gradient-secondary p-3 text-white mr-3 flex-shrink-0">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">Office Hours</h4>
+                            <p class="text-gray-700">Monday - Friday: 9AM - 5PM</p>
+                            <p class="text-gray-700">Saturday: 10AM - 2PM</p>
+                            <p class="text-gray-700">Sunday: Closed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="rounded-full bg-gradient-info p-3 text-white mr-3 flex-shrink-0">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium mb-1">24/7 Support</h4>
+                            <p class="text-gray-700">Call our helpline for urgent assistance</p>
+                            <p class="font-medium text-blue-600">1-800-ZENTORRA</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Our Location Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 gradient-text">Our Location</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <div class="map-container">
+                        <div id="our-location-map"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-gray-50 p-5 rounded-lg border border-gray-100 h-full">
+                        <h4 class="font-medium mb-3">Zentorra Medicare Headquarters</h4>
+                        <div class="flex items-start mb-3">
+                            <div class="text-blue-500 mr-3 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <p class="text-gray-700">
+                                123 Health Avenue<br>
+                                Medical District<br>
+                                New York, NY 10001<br>
+                                United States
+                            </p>
+                        </div>
+                        
+                        <div class="flex items-start mb-3">
+                            <div class="text-blue-500 mr-3 flex-shrink-0">
+                                <i class="fas fa-directions"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-700 mb-2">Get directions to our location</p>
+                                <button id="get-directions" class="bg-gradient-info text-white py-1 px-4 rounded-md transition-all duration-300 hover:shadow-md">
+                                    <i class="fas fa-route mr-1"></i> Directions
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-blue-500 mr-3 flex-shrink-0">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <p class="text-gray-700">
+                                We're located in the heart of the Medical District, easily accessible by public transport and with ample parking available.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Side Panel Navigation -->
+    <div id="side-panel" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-4 border-b bg-gradient-primary sticky top-0 z-10">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Zentorra Medicare</h2>
+                <button id="close-menu" class="text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-white p-1 rounded-md transition-all duration-200" aria-label="Close navigation menu">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <nav class="p-4 overflow-y-auto max-h-[calc(100vh-60px)]">
+            <ul class="space-y-2">
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="index.html" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Dashboard">
+                        <i class="fas fa-home w-5 text-base"></i>
+                        <span class="ml-2">Dashboard</span>
+                    </a>
+                </li>
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Profile">
+                        <i class="fas fa-user w-5 text-base"></i>
+                        <span class="ml-2">Profile</span>
+                    </a>
+                </li>
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="symptom-tracker.html" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Symptom Tracker">
+                        <i class="fas fa-chart-simple w-5 text-base"></i>
+                        <span class="ml-2">Symptom Tracker</span>
+                    </a>
+                </li>
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="medication.html" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Medication">
+                        <i class="fas fa-pills w-5 text-base"></i>
+                        <span class="ml-2">Medication</span>
+                    </a>
+                </li>
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="telemedicine.html" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Telemedicine">
+                        <i class="fas fa-video w-5 text-base"></i>
+                        <span class="ml-2">Telemedicine</span>
+                    </a>
+                </li>
+                <li class="rounded-md bg-blue-50 transition-colors duration-200">
+                    <a href="contact.html" class="flex items-center text-azure p-2" aria-label="Contact">
+                        <i class="fas fa-address-book w-5 text-base"></i>
+                        <span class="ml-2">Contact</span>
+                    </a>
+                </li>
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="emergency.html" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Emergency Services">
+                        <i class="fas fa-hospital w-5 text-base"></i>
+                        <span class="ml-2">Emergency Services</span>
+                    </a>
+                </li>
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="chat.html" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="AI Assistant">
+                        <i class="fas fa-message w-5 text-base"></i>
+                        <span class="ml-2">AI Assistant</span>
+                    </a>
+                </li>
+                <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                    <a href="about.html" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="About">
+                        <i class="fas fa-circle-info w-5 text-base"></i>
+                        <span class="ml-2">About</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-4 pt-4 border-t">
+                <ul class="space-y-2">
+                    <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Settings">
+                            <i class="fas fa-gear w-5 text-base"></i>
+                            <span class="ml-2">Settings</span>
+                        </a>
+                    </li>
+                    <li class="rounded-md hover:bg-blue-50 transition-colors duration-200">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure p-2" aria-label="Sign Out">
+                            <i class="fas fa-right-from-bracket w-5 text-base"></i>
+                            <span class="ml-2">Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-40"></div>
+
+    <!-- Floating Action Button for emergency -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <a href="emergency.html" class="bg-gradient-danger text-white h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-transform duration-300 hover:scale-110">
+            <i class="fas fa-ambulance text-xl"></i>
+        </a>
+    </div>
+    
+    <script src="js/main.js"></script>
+    <script>
+        // Initialize maps when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize user's location map
+            const locationMap = L.map('location-map').setView([40.7128, -74.0060], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(locationMap);
+            
+            // Try to get user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    
+                    locationMap.setView([userLat, userLng], 15);
+                    
+                    L.marker([userLat, userLng]).addTo(locationMap)
+                        .bindPopup('Your Location')
+                        .openPopup();
+                }, function() {
+                    // Error handling if user denies location or it's not available
+                    console.log('Could not get user location');
+                });
+            }
+            
+            // Initialize our location map
+            const ourLocationMap = L.map('our-location-map').setView([40.7505, -73.9934], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(ourLocationMap);
+            
+            // Add marker for our office location
+            L.marker([40.7505, -73.9934]).addTo(ourLocationMap)
+                .bindPopup('Zentorra Medicare Headquarters')
+                .openPopup();
+        });
+        
+        // Function to handle phone calls
+        function callNumber(phoneNumber) {
+            window.location.href = `tel:${phoneNumber}`;
+        }
+        
+        // Handle directions button
+        document.getElementById('get-directions').addEventListener('click', function() {
+            // Open Google Maps directions to our location
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=40.7505,-73.9934&destination_place_id=Zentorra+Medicare+Headquarters`, '_blank');
+        });
+        
+        // Handle contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // In a real application, you would send this data to your server
+            console.log('Form submitted:', { name, email, subject, message });
+            
+            // Show success message (this is a placeholder)
+            alert('Thank you for your message. We will get back to you soon!');
+            
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html> 
+

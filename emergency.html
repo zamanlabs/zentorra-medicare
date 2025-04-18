@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Services - Zentorra Medicare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- App CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/emergency-contact.css">
+    <link rel="stylesheet" href="css/emergency-alert.css">
+    <link rel="stylesheet" href="css/azure-theme.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Leaflet map container style */
+        #map {
+            height: 100%;
+            width: 100%;
+            min-height: 250px;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="menu-toggle" class="text-white hover:text-blue-100 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <h1 class="ml-4 text-xl font-bold">Zentorra Medicare</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="auth.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Emergency Banner -->
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md flex items-center justify-between">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-triangle mr-3 text-red-500"></i>
+            <p><strong>In case of medical emergency, dial 999 immediately.</strong> Do not wait for an online response.</p>
+        </div>
+        <div>
+            <button id="emergency-call" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md flex items-center transition-colors duration-200">
+                <i class="fas fa-phone mr-2"></i>
+                Call Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 bg-gradient-azure bg-clip-text text-transparent">Emergency Services</h2>
+            <span class="ml-3 bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Important</span>
+        </div>
+
+        <!-- Live Location Map Section -->
+        <section class="live-location mb-6">
+            <div class="location-details">
+                <h2>Your Current Location</h2>
+                <p id="location-name" class="location-name">Fetching address...</p>
+                <p class="text-sm text-gray-700 mt-2">This helps find the nearest services to you</p>
+                <div class="mt-4">
+                    <button id="refresh-location" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors duration-200">
+                        <i class="fas fa-sync-alt mr-2"></i> Refresh Location
+                    </button>
+                </div>
+            </div>
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </section>
+        
+        <!-- SOS Section -->
+        <section class="sos-section">
+            <h2>Emergency SOS</h2>
+            <p>Click the SOS button to call emergency services based on your current location</p>
+            <button class="sos-button">
+                <i class="fas fa-phone-volume mr-2"></i> SOS
+            </button>
+        </section>
+
+        <!-- Emergency Contact Options -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">Emergency Numbers</h3>
+                <ul class="space-y-4">
+                    <li class="flex justify-between items-center p-3 bg-red-50 rounded-md border border-red-100">
+                        <div class="flex items-center">
+                            <div class="rounded-full bg-red-100 p-3 mr-3">
+                                <i class="fas fa-phone text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">National Emergency Service</p>
+                                <p class="text-sm text-gray-600">Police, Fire, Ambulance</p>
+                            </div>
+                        </div>
+                        <a href="tel:999" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md font-medium">
+                            Call 999
+                        </a>
+                    </li>
+                    <li class="flex justify-between items-center p-3 bg-blue-50 rounded-md border border-blue-100">
+                        <div class="flex items-center">
+                            <div class="rounded-full bg-blue-100 p-3 mr-3">
+                                <i class="fas fa-user-nurse text-azure"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Ambulance Service</p>
+                                <p class="text-sm text-gray-600">24/7 Emergency Medical Transport</p>
+                            </div>
+                        </div>
+                        <a href="tel:10622" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-medium">
+                            Call 10622
+                        </a>
+                    </li>
+                    <li class="flex justify-between items-center p-3 bg-purple-50 rounded-md border border-purple-100">
+                        <div class="flex items-center">
+                            <div class="rounded-full bg-purple-100 p-3 mr-3">
+                                <i class="fas fa-building-shield text-purple-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Fire Service</p>
+                                <p class="text-sm text-gray-600">Fire & Civil Defense</p>
+                            </div>
+                        </div>
+                        <a href="tel:16163" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-md font-medium">
+                            Call 16163
+                        </a>
+                    </li>
+                    <li class="flex justify-between items-center p-3 bg-green-50 rounded-md border border-green-100">
+                        <div class="flex items-center">
+                            <div class="rounded-full bg-green-100 p-3 mr-3">
+                                <i class="fas fa-shield-alt text-green-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Police Helpline</p>
+                                <p class="text-sm text-gray-600">National Emergency Police</p>
+                            </div>
+                        </div>
+                        <a href="tel:100" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md font-medium">
+                            Call 100
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Emergency Contacts Section -->
+            <section class="contacts-section">
+                <h2>Your Emergency Contacts</h2>
+                <ul id="contact-list" class="contact-list">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+
+                <div class="add-contact-form">
+                    <input type="text" id="contact-name" placeholder="Name" />
+                    <input type="tel" id="contact-number" placeholder="Phone Number" />
+                    <button id="add-contact-btn">
+                        <i class="fas fa-plus mr-1"></i> Add Contact
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Nearby Hospitals -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">Nearby Emergency Departments</h3>
+            <ul class="space-y-4">
+                <li class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-red-100 p-3 mr-3">
+                                <i class="fas fa-hospital text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Dhaka Medical College Hospital</p>
+                                <p class="text-sm text-gray-500">Secretariat Rd, Dhaka 1000</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded mr-2">Open 24/7</span>
+                                    <span class="text-sm text-gray-500">Emergency Services</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <a href="tel:+880255165088" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Call ED
+                            </a>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hospital-directions" data-hospital-address="Secretariat Rd, Dhaka 1000">
+                                Directions
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-red-100 p-3 mr-3">
+                                <i class="fas fa-hospital text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Square Hospital</p>
+                                <p class="text-sm text-gray-500">18/F, Bir Uttam Qazi Nuruzzaman Sarak, Dhaka 1205</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded mr-2">Open 24/7</span>
+                                    <span class="text-sm text-gray-500">Emergency & Trauma Center</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <a href="tel:+8801713377775" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Call ED
+                            </a>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hospital-directions" data-hospital-address="18/F, Bir Uttam Qazi Nuruzzaman Sarak, Dhaka 1205">
+                                Directions
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                <li class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-red-100 p-3 mr-3">
+                                <i class="fas fa-hospital text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">United Hospital Limited</p>
+                                <p class="text-sm text-gray-500">Plot 15, Road 71, Gulshan, Dhaka 1212</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded mr-2">Open 24/7</span>
+                                    <span class="text-sm text-gray-500">Comprehensive Emergency Care</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <a href="tel:+8801914001234" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                                Call ED
+                            </a>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hospital-directions" data-hospital-address="Plot 15, Road 71, Gulshan, Dhaka 1212">
+                                Directions
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Ambulance Services -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">Ambulance Services</h3>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-triangle-exclamation text-yellow-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium text-yellow-800">When to call an ambulance</h4>
+                        <ul class="mt-2 text-sm text-yellow-700 list-disc list-inside">
+                            <li>Chest pain or difficulty breathing</li>
+                            <li>Severe bleeding or head trauma</li>
+                            <li>Signs of stroke (facial drooping, arm weakness, speech difficulty)</li>
+                            <li>Severe allergic reactions</li>
+                            <li>Unconsciousness or unresponsiveness</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ul class="space-y-4">
+                <li class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-red-100 p-3 mr-3">
+                                <i class="fas fa-ambulance text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">BRAC Ambulance Services</p>
+                                <p class="text-sm text-gray-500">Emergency Medical Transport</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-sm text-azure">Available 24/7</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="tel:16643" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                            Call 16643
+                        </a>
+                    </div>
+                </li>
+                <li class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-start">
+                            <div class="rounded-full bg-blue-100 p-3 mr-3">
+                                <i class="fas fa-ambulance text-azure"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Medinova Medical Services</p>
+                                <p class="text-sm text-gray-500">Hospital-based Ambulance</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded mr-2">24/7 Service</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="tel:9126625" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                            Call
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Side Panel Navigation (Same as index.html) -->
+    <div id="side-panel" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-4 border-b bg-gradient-azure">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Zentorra Medicare</h2>
+                <button id="close-menu" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <nav class="p-4">
+            <ul class="space-y-3">
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="index.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-home w-6"></i>
+                        <span class="ml-2">Dashboard</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-user w-6"></i>
+                        <span class="ml-2">Profile</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="symptom-tracker.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-chart-simple w-6"></i>
+                        <span class="ml-2">Symptom Tracker</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="medication.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-pills w-6"></i>
+                        <span class="ml-2">Medication</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="telemedicine.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-video w-6"></i>
+                        <span class="ml-2">Telemedicine</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="contact.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-address-book w-6"></i>
+                        <span class="ml-2">Contact</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md bg-blue-50">
+                    <a href="emergency.html" class="flex items-center text-azure">
+                        <i class="fas fa-hospital w-6"></i>
+                        <span class="ml-2">Emergency Services</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="chat.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-message w-6"></i>
+                        <span class="ml-2">AI Assistant</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="about.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-circle-info w-6"></i>
+                        <span class="ml-2">About</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-6 pt-6 border-t">
+                <ul class="space-y-3">
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-gear w-6"></i>
+                            <span class="ml-2">Settings</span>
+                        </a>
+                    </li>
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-right-from-bracket w-6"></i>
+                            <span class="ml-2">Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/leaflet-location.js"></script>
+    <script src="js/emergency-contact.js"></script>
+    <script src="js/theme-switcher.js"></script>
+</body>
+</html> 
+

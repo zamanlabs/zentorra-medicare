@@ -1,0 +1,644 @@
+/* Custom styles for Zentorra Medicare App */
+
+/* Theme colors and gradients */
+:root {
+  /* Primary colors palette - soft blues and teals */
+  --primary-gradient: linear-gradient(135deg, #3b82f6, #0ea5e9);
+  --secondary-gradient: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  --tertiary-gradient: linear-gradient(135deg, #06b6d4, #0891b2);
+  
+  /* Background gradients - soft and subtle */
+  --page-gradient: linear-gradient(120deg, #f8fafc, #f0f9ff, #eff6ff);
+  --light-gradient: linear-gradient(135deg, #f0f9ff, #ecfdf5);
+  --card-gradient: linear-gradient(to bottom, #ffffff, #f9fafb);
+  
+  /* Component gradients */
+  --success-gradient: linear-gradient(135deg, #10b981, #059669);
+  --warning-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+  --danger-gradient: linear-gradient(135deg, #ef4444, #dc2626);
+  --info-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+  
+  /* Solid colors */
+  --primary-color: #3b82f6;
+  --secondary-color: #0ea5e9;
+  --accent-color: #8b5cf6;
+  --text-color: #334155;
+  --text-color-light: #64748b;
+  --bg-color: #f8fafc;
+  --light-gray: #e2e8f0;
+  --dark-gray: #475569;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  --success-color: #10b981;
+  --info-color: #3b82f6;
+  
+  /* Spacing system */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Apply gradient background to body */
+body {
+  background: var(--page-gradient);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--text-color);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Header styling with gradient */
+header {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-lg);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+header h1 {
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+}
+
+/* Button styling */
+.bg-blue-500, .btn-primary {
+  background: var(--primary-gradient);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.bg-blue-500:hover, .hover\:bg-blue-600:hover, .btn-primary:hover {
+  background: var(--secondary-gradient);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Card styling with gradient background */
+.bg-white.rounded-lg.shadow-md, .card {
+  background: var(--card-gradient);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 3px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+}
+
+.bg-white.rounded-lg.shadow-md:hover, .card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-image: var(--primary-gradient) 1;
+}
+
+/* Section spacing and typography */
+section {
+  margin-bottom: var(--spacing-xl);
+}
+
+h2 {
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+h3 {
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+p {
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-color-light);
+}
+
+/* Health metrics card styling */
+.grid-cols-1.md\:grid-cols-3 > div {
+  transition: transform 0.2s ease;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  background: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.grid-cols-1.md\:grid-cols-3 > div:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+/* Status color backgrounds with gradients */
+.bg-blue-50, .status-info {
+  background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+  border-color: #bfdbfe;
+}
+
+.bg-green-50, .status-success {
+  background: linear-gradient(135deg, #dcfce7, #d1fae5);
+  border-color: #bbf7d0;
+}
+
+.bg-red-50, .status-danger {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border-color: #fca5a5;
+}
+
+.bg-yellow-50, .status-warning {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #fcd34d;
+}
+
+.bg-purple-50, .status-purple {
+  background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+  border-color: #d8b4fe;
+}
+
+.bg-gray-50, .status-neutral {
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  border-color: #e5e7eb;
+}
+
+/* Transitions for sidebar */
+#side-panel {
+  background: linear-gradient(to right, #ffffff, #f8fafc);
+  box-shadow: var(--shadow-xl);
+  z-index: 50;
+  width: 16rem;
+}
+
+#side-panel nav li a {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  color: var(--text-color);
+}
+
+#side-panel nav li a:hover {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.1));
+  color: var(--primary-color);
+  transform: translateX(3px);
+}
+
+#side-panel nav li a.active {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2));
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* Custom scrollbar for sidebar */
+#side-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+#side-panel::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+#side-panel::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #c7d2fe, #a5b4fc);
+  border-radius: 10px;
+}
+
+#side-panel::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #a5b4fc, #818cf8);
+}
+
+/* Floating action buttons animations */
+.fixed.bottom-6.right-6 a {
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Green chat button gradient */
+.fixed.bottom-6.right-6 a:first-child {
+  background: var(--success-gradient);
+}
+
+.fixed.bottom-6.right-6 a:first-child:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: scale(1.12);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Red emergency button gradient */
+.fixed.bottom-6.right-6 a:last-child {
+  background: var(--danger-gradient);
+}
+
+.fixed.bottom-6.right-6 a:last-child:hover {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  transform: scale(1.12);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Pulsing animation for emergency button */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.fixed.bottom-6.right-6 a:last-child {
+  animation: pulse 2s infinite;
+}
+
+/* Improved form styling */
+input, select, textarea {
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--light-gray);
+  transition: all 0.3s ease;
+  background-color: white;
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  outline: none;
+}
+
+label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/* Button styles */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--secondary-gradient);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: var(--text-color);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: var(--success-gradient);
+  color: white;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: var(--danger-gradient);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  transform: translateY(-2px);
+}
+
+.btn-warning {
+  background: var(--warning-gradient);
+  color: white;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-2px);
+}
+
+/* Card styles */
+.card {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  background: var(--card-gradient);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+}
+
+/* Empty state styling */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl);
+  text-align: center;
+  color: var(--text-color-light);
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-radius: var(--radius-lg);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.7;
+}
+
+/* Progress bar styling */
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: var(--light-gray);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: var(--spacing-sm) 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  transition: width 0.5s ease;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+}
+
+/* Badge styling */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-primary {
+  background: var(--primary-gradient);
+  color: white;
+}
+
+.badge-success {
+  background: var(--success-gradient);
+  color: white;
+}
+
+.badge-warning {
+  background: var(--warning-gradient);
+  color: white;
+}
+
+.badge-danger {
+  background: var(--danger-gradient);
+  color: white;
+}
+
+/* Notification styling */
+.notification {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  color: white;
+  max-width: 24rem;
+  z-index: 100;
+  animation: slideInUp 0.4s ease forwards;
+}
+
+.notification.success {
+  background: var(--success-gradient);
+}
+
+.notification.error {
+  background: var(--danger-gradient);
+}
+
+.notification.info {
+  background: var(--info-gradient);
+}
+
+.notification.warning {
+  background: var(--warning-gradient);
+}
+
+/* Helper classes */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Improved image fallbacks */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+img.fallback-ready {
+  position: relative;
+}
+
+img.fallback-ready::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--light-gray);
+  border-radius: var(--radius-md);
+  z-index: 1;
+}
+
+img.fallback-ready::after {
+  content: "Image not available";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-color-light);
+  font-size: 0.875rem;
+  z-index: 2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  :root {
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+  }
+  
+  .container {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+  
+  .card, .bg-white.rounded-lg.shadow-md {
+    padding: var(--spacing-md);
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  .fixed.bottom-6.right-6 {
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+  }
+  
+  .fixed.bottom-6.right-6 a {
+    height: 3rem;
+    width: 3rem;
+  }
+  
+  /* Responsive tables */
+  .responsive-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.5s ease forwards;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Background gradient classes for reuse */
+.bg-gradient-primary {
+  background: var(--primary-gradient);
+}
+
+.bg-gradient-secondary {
+  background: var(--secondary-gradient);
+}
+
+.bg-gradient-light {
+  background: var(--light-gradient);
+}
+
+.bg-gradient-success {
+  background: var(--success-gradient);
+}
+
+.bg-gradient-danger {
+  background: var(--danger-gradient);
+}
+
+.bg-gradient-warning {
+  background: var(--warning-gradient);
+}
+
+.bg-gradient-info {
+  background: var(--info-gradient);
+}
+
+/* Add subtle wave pattern to page background */
+.wave-bg {
+  background-image: 
+    linear-gradient(120deg, #f8fafc, #f0f9ff, #eff6ff),
+    url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264.888-.14 1.005-.157 1.87-.34 2.12-.33 1.323-.103 2.743-.9 4.097-.053 1.8.1 1.9-.137 2.18-.337 1.23-.882 2.735-.155 4.104-.234 1.378-.08 2.88-.315 4.252-.154 1.382.156 2.835-.07 4.242.085 1.412.153 2.867.017 4.278.118 1.382.101 2.858.157 4.237.074 1.38-.084 2.87-.063 4.27.117 1.382.176 2.87.034 4.242.134 1.38.103 2.88.09 4.26.014 1.377-.077 2.87-.005 4.26.14 1.387.138 2.87.01 4.263.024 1.37.012 2.842-.127 4.23.056 1.39.185 2.88-.094 4.265-.033a31.934 31.934 0 0 1 4.265.224c1.392.097 2.882-.1 4.266-.038 1.383.063 2.86-.26 4.265-.216 1.386.05 2.874.056 4.266-.146 1.4-.203 2.884-.128 4.266-.305 1.38-.175 2.86-.272 4.26-.22 1.4.05 2.885-.077 4.27-.04 1.386.04 2.855-.112 4.243-.155 1.388-.043 2.87.173 4.265.111 1.39-.06 2.868.023 4.268-.05.14-.068.278-.137.415-.206l.124-.06c.047-.023.094-.047.14-.073.132-.07.263-.138.394-.21l.34-.192c.1-.052.198-.106.298-.16.13-.073.255-.152.388-.233a8.263 8.263 0 0 0 .585-.396c.018-.013.035-.026.05-.04.51-.396 1-.956 1.483-1.647-.04.02-.082.04-.125.058-.043.02-.087.038-.13.056-.259.116-.52.22-.786.305-.29.092-.58.17-.882.22-.138.028-.6.114-.6.143v.003C75.962 19.69 68.778 20 62.078 20c-5.72 0-11.876-.237-14.894-1.803-5.475-2.84-13.015-3.267-18.633-3.267C19.206 14.93 10.38 16.9 5.94 18.9c-1.76.79-2.782 1.085-3.142 1.18Zm-4.383-5.518c.3.31 0 .62-.016.093-.012.055-.022.11-.022.162 0 .787.254 1.536.714 2.124a4.38 4.38 0 0 0 .665.703c.027.026.055.05.084.075a4.928 4.928 0 0 0 1.554.823l.095.03A39.5 39.5 0 0 0 10.3 18.6c1.82.196 3.667.328 5.437.38.05.002.1.003.15.004 2.83.085 5.545.043 7.5-.44.32-.08.616-.18.9-.295a4.228 4.228 0 0 0 .71-.368c.3-.207.582-.45.806-.735a3.176 3.176 0 0 0 .626-1.117 3.73 3.73 0 0 0 .167-.699c.01-.076.02-.152.023-.228.002-.043.002-.085.002-.127 0-.06-.007-.118-.016-.177-.42.035-.937.078-1.438.123l-.504.045c-2.162.194-4.46.4-6.33.96-1.087.308-2.087.95-2.87 1.93-.785.98-1.218 2.287-1.218 3.827 0 .917.192 1.603.462 2.097.343.627.795 1.055 1.15 1.392.83.792 1.525 1.304 1.784 2.215.033.113.07.226.094.348.003.013.01.026.012.04.042.154.07.32.07.504a2.27 2.27 0 0 1-.055.47 2.94 2.94 0 0 1-.14.56c-.047.133-.097.267-.157.4-.29.65-.727 1.258-1.254 1.726a5.13 5.13 0 0 1-1.547 1.01c-.174.077-.356.14-.54.193h-.002c.25-.236.478-.487.685-.756.326-.424.6-.893.803-1.4.098-.247.18-.507.24-.78.032-.14.055-.284.07-.43.012-.12.017-.244.017-.37 0-.308-.034-.597-.094-.865-.156-.696-.473-1.28-.92-1.744-.446-.464-.997-.814-1.586-1.053-.51-.206-1.056-.336-1.615-.385-.542-.048-1.095-.025-1.636.08h-.002c.095-.146.196-.29.306-.426.195-.243.41-.47.64-.676.23-.206.478-.392.738-.554a4.885 4.885 0 0 1 .777-.374l.198-.073a7.234 7.234 0 0 1 .61-.175c.072-.017.145-.032.22-.046.063-.012.126-.026.19-.036a6.627 6.627 0 0 1 .404-.055c.096-.01.193-.018.29-.023.07-.004.138-.005.208-.006l.106-.001h.046c.115 0 .228.005.34.012.143.01.286.028.426.053l.193.036c.203.044.4.102.59.174.096.037.19.077.28.12.09.043.177.09.262.14.085.05.166.1.246.158l.15.108c.1.073.194.15.282.233a3.234 3.234 0 0 1 .333.346c.044.052.083.107.123.162.04.055.079.11.115.167.034.058.066.118.095.18.28.06.056.122.08.184a3.537 3.537 0 0 1 .154.492 4.81 4.81 0 0 1 .113.67c.007.057.012.115.016.174.005.06.008.12.008.18L25 13c0 .152-.007.3-.02.447-.012.144-.03.285-.053.424-.085.52-.236.994-.463 1.417-.227.422-.518.787-.847 1.082-.4.36-.88.628-1.335.797-.456.17-.887.242-1.256.242h-.027c-.388 0-.797-.073-1.222-.222-.424-.15-.863-.374-1.286-.68a7.03 7.03 0 0 1-.498-.39L17.93 16c-.072-.06-.144-.123-.213-.188-.074-.07-.143-.143-.21-.218-.066-.075-.13-.152-.19-.232-.063-.083-.122-.17-.18-.257a5.53 5.53 0 0 1-.553-1.06 3.667 3.667 0 0 1-.12-.359 3.43 3.43 0 0 1-.114-.802c-.004-.084-.004-.168 0-.252.002-.042.004-.084.007-.126a2.98 2.98 0 0 1 .027-.237c.007-.047.016-.094.026-.14a2.428 2.428 0 0 1 .252-.686c.067-.119.142-.232.226-.34a1.993 1.993 0 0 1 .512-.496c.172-.12.356-.217.552-.296.196-.08.402-.142.618-.19zm4.708 11.044a5.564 5.564 0 0 0-.17-.08 5.858 5.858 0 0 0-.9-.32 6.04 6.04 0 0 0-.283-.07 6.237 6.237 0 0 0-1.068-.125h-.08a6.167 6.167 0 0 0-1.83.3c-.277.092-.543.208-.8.345-.273.147-.533.316-.773.508-.103.082-.204.168-.3.258a10.805 10.805 0 0 0-.118.11c-.212.2-.407.415-.58.65-.147.197-.28.409-.395.634l-.075.15c-.006.01-.01.022-.016.032a8.06 8.06 0 0 0-.378.967 8.95 8.95 0 0 0-.358 1.402c-.022.128-.04.257-.056.387v.004c-.016.13-.028.261-.038.393-.002.033-.004.066-.006.1a10.74 10.74 0 0 0-.022.54c0 .324.014.644.04.96a11.02 11.02 0 0 0 .2 1.586c.011.056.025.11.038.165a9.39 9.39 0 0 0 .397 1.265c.053.133.108.264.167.394.033.073.068.145.102.217l.055.112c.111.225.233.442.355.654.04.07.08.14.125.21.082.135.168.267.256.398a9.415 9.415 0 0 0 .505.665 10.3 10.3 0 0 0 .604.665l.087.088c.242.24.498.46.757.672l.048.04c.054.043.108.085.164.127.134.103.27.204.41.3.05.035.103.07.154.104.027.018.053.036.08.054a10.558 10.558 0 0 0 .486.305c.075.044.15.087.226.128.058.031.116.062.175.093.12.06.245.12.37.175.055.024.11.047.164.07.043.018.085.037.13.055.036.015.072.028.11.042.073.03.148.057.223.084.145.052.293.1.442.145.104.03.21.058.315.084l.068.016c.107.025.214.047.323.068l.1.018c.275.047.554.084.835.104l.123.008c.136.008.27.012.408.012.13 0 .26-.004.388-.012l.118-.01c.098-.008.196-.018.293-.03l.033-.005a9.28 9.28 0 0 0 .3-.047c.066-.012.133-.023.2-.036a10.07 10.07 0 0 0 .568-.13c.167-.043.33-.093.495-.145.087-.028.174-.055.26-.085l.24-.086c.068-.024.135-.05.202-.076l.09-.035a10.495 10.495 0 0 0 .49-.217c.076-.036.152-.072.228-.11l.074-.038c.02-.01.04-.022.058-.033.046-.025.09-.05.137-.074a10.425 10.425 0 0 0 .21-.122 10.983 10.983 0 0 0 .59-.381c.09-.063.18-.125.266-.19a10.97 10.97 0 0 0 1.302-1.128l.007-.007c.044-.046.087-.093.13-.14.164-.174.322-.355.475-.542.12-.147.236-.297.347-.45.047-.066.093-.133.14-.2.136-.202.266-.407.388-.618.07-.12.137-.243.203-.367l.02-.04.002-.003c.082-.156.162-.315.235-.477a10.98 10.98 0 0 0 .479-1.226c.096-.307.179-.622.245-.945.047-.23.088-.463.12-.7V12.4c.027-.188.047-.38.064-.574a11.93 11.93 0 0 0 .041-.784c.001-.03 0-.06 0-.09C30.13.004 30.13-.003 30.13-.01a1.105 1.105 0 0 1-.7.01c-.025 0-.05 0-.075.003a1.333 1.333 0 0 0-.13.017c-.146.024-.29.062-.42.118a1.74 1.74 0 0 0-.138.63 1.76 1.76 0 0 0-.36.197c-.113.07-.216.15-.308.242a1.93 1.93 0 0 0-.24.308c-.06.093-.11.196-.15.308a1.76 1.76 0 0 0-.63.138 1.333 1.333 0 0 0-.17.13c-.003.025-.003.05-.003.076 0 .178.05.316.148.46.03.042.063.082.098.12a1.8 1.8 0 0 0 .123.127c.007.007.036.035.082.077a3.83 3.83 0 0 0 .155.135 5.538 5.538 0 0 0 .512.372 8.858 8.858 0 0 0 .89.492z' fill='%239C92AC' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+/* Add dot pattern to card backgrounds */
+.pattern-dots {
+  background-color: white;
+  background-image: 
+    radial-gradient(var(--light-gray) 1px, transparent 1px),
+    radial-gradient(var(--light-gray) 1px, white 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  opacity: 0.5;
+  z-index: 0;
+} 

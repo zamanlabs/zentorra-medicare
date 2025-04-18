@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Health Assistant - Zentorra Medicare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/azure-theme.css">
+    <link rel="stylesheet" href="css/emergency-alert.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* We're not changing the chat functionality related styles */
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="menu-toggle" class="text-white hover:text-blue-100 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <h1 class="ml-4 text-xl font-bold">Zentorra Medicare</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="auth.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 h-[calc(100vh-72px)] flex flex-col">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+                <h2 class="text-2xl font-bold text-gray-800 bg-gradient-azure bg-clip-text text-transparent">AI Health Assistant</h2>
+                <span class="ml-3 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">AI Powered</span>
+            </div>
+            <div>
+                <button id="clear-chat" class="btn-secondary px-3 py-2 rounded-md text-sm flex items-center">
+                    <i class="fas fa-eraser mr-2"></i>
+                    Clear Chat
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="bg-white rounded-lg shadow-md flex-1 flex flex-col overflow-hidden">
+            <!-- Chat Header -->
+            <div class="border-b p-4 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <i class="fas fa-robot text-green-600"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="font-medium">HealthBot</h3>
+                    <p class="text-xs text-gray-500">AI-powered health assistant</p>
+                </div>
+                <div class="ml-auto flex space-x-2">
+                    <button id="clear-chat" class="text-gray-400 hover:text-gray-600" title="Clear chat history">
+                        <i class="fas fa-trash-can"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-volume-high"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-ellipsis-vertical"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                <!-- Bot welcome message -->
+                <div class="flex items-start">
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-green-600 text-sm"></i>
+                    </div>
+                    <div class="ml-2 bg-gray-100 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]">
+                        <p>Hello! I'm your AI health assistant. I can help with medical questions and information about symptoms, medications, and general health advice.</p>
+                        <p class="mt-2 text-sm">You can ask me questions like:</p>
+                        <ul class="list-disc list-inside mt-1 text-sm">
+                            <li>What are common causes of headaches?</li>
+                            <li>How can I tell if my symptoms are serious?</li>
+                            <li>What are side effects of common medications?</li>
+                        </ul>
+                        <p class="mt-2 text-xs text-gray-500">Note: I'm not a replacement for professional medical advice. Always consult with a healthcare provider for medical concerns.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="border-t p-4">
+                <div class="flex space-x-2">
+                    <button class="text-gray-500 hover:text-gray-700 p-2">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <div class="flex-1 relative flex items-center">
+                        <input type="text" id="chat-input" class="w-full border border-gray-300 rounded-full px-4 py-2 pr-16 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Type or speak your health question...">
+                        <div id="speech-visualizer" class="absolute right-10 top-1/2 transform -translate-y-1/2 h-5 w-6 flex items-center justify-around opacity-0 transition-opacity duration-300">
+                            <span class="w-1 h-1 bg-blue-500 rounded-full inline-block"></span>
+                            <span class="w-1 h-2 bg-blue-500 rounded-full inline-block"></span>
+                            <span class="w-1 h-3 bg-blue-500 rounded-full inline-block"></span>
+                        </div>
+                        <button id="mic-button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-azure p-1 transition-colors duration-200" title="Use voice input">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                    <button id="send-message" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="mt-2 flex justify-between items-center text-xs text-gray-500">
+                    <span>Type questions about health concerns or symptoms</span>
+                    <span id="speech-status" class="text-right transition-opacity duration-300 opacity-0">Listening...</span>
+                    <button id="suggested-questions" class="underline">Suggested Questions</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Side Panel Navigation (Same as index.html) -->
+    <div id="side-panel" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-4 border-b bg-gradient-azure">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Zentorra Medicare</h2>
+                <button id="close-menu" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <nav class="p-4">
+            <ul class="space-y-3">
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="index.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-home w-6"></i>
+                        <span class="ml-2">Dashboard</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-user w-6"></i>
+                        <span class="ml-2">Profile</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="symptom-tracker.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-chart-simple w-6"></i>
+                        <span class="ml-2">Symptom Tracker</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="medication.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-pills w-6"></i>
+                        <span class="ml-2">Medication</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="telemedicine.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-video w-6"></i>
+                        <span class="ml-2">Telemedicine</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="contact.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-address-book w-6"></i>
+                        <span class="ml-2">Contact</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="emergency.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-hospital w-6"></i>
+                        <span class="ml-2">Emergency Services</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md bg-blue-50">
+                    <a href="chat.html" class="flex items-center text-azure">
+                        <i class="fas fa-message w-6"></i>
+                        <span class="ml-2">AI Assistant</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="about.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-circle-info w-6"></i>
+                        <span class="ml-2">About</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-6 pt-6 border-t">
+                <ul class="space-y-3">
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-gear w-6"></i>
+                            <span class="ml-2">Settings</span>
+                        </a>
+                    </li>
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-right-from-bracket w-6"></i>
+                            <span class="ml-2">Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/medical-chat.js"></script>
+    <script src="js/emergency-alert.js"></script>
+    <script src="js/speech-recognition.js"></script>
+    <script>
+        // Chat page specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatInput = document.getElementById('chat-input');
+            const sendButton = document.getElementById('send-message');
+            const chatMessages = document.getElementById('chat-messages');
+            const suggestedQuestionsButton = document.getElementById('suggested-questions');
+            const clearChatButton = document.getElementById('clear-chat');
+            const micButton = document.getElementById('mic-button');
+            const speechStatus = document.getElementById('speech-status');
+            
+            // Add loading indicator
+            function showLoadingIndicator() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'flex items-start';
+                loadingDiv.id = 'loading-indicator';
+                
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0';
+                
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-robot text-green-600 text-sm';
+                
+                const textDiv = document.createElement('div');
+                textDiv.className = 'ml-2 bg-gray-100 rounded-lg rounded-tl-none px-4 py-3 max-w-[80%] flex items-center';
+                
+                const dotsContainer = document.createElement('div');
+                dotsContainer.className = 'flex space-x-1';
+                
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'w-2 h-2 bg-gray-400 rounded-full animate-bounce';
+                    dot.style.animationDelay = `${i * 0.15}s`;
+                    dotsContainer.appendChild(dot);
+                }
+                
+                textDiv.appendChild(dotsContainer);
+                iconDiv.appendChild(icon);
+                loadingDiv.appendChild(iconDiv);
+                loadingDiv.appendChild(textDiv);
+                
+                chatMessages.appendChild(loadingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function removeLoadingIndicator() {
+                const loadingIndicator = document.getElementById('loading-indicator');
+                if (loadingIndicator) {
+                    chatMessages.removeChild(loadingIndicator);
+                }
+            }
+            
+            // Add message to the chat
+            function addMessage(content, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = isUser ? 'flex items-start justify-end' : 'flex items-start';
+                
+                const iconDiv = document.createElement('div');
+                iconDiv.className = isUser ? 
+                    'w-8 h-8 rounded-full bg-blue-200 flex items-center justify-center flex-shrink-0' : 
+                    'w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0';
+                
+                const icon = document.createElement('i');
+                icon.className = isUser ? 'fas fa-user text-azure text-sm' : 'fas fa-robot text-green-600 text-sm';
+                
+                const textDiv = document.createElement('div');
+                textDiv.className = isUser ? 
+                    'mr-2 bg-blue-500 text-white rounded-lg rounded-tr-none px-4 py-2 max-w-[80%]' : 
+                    'ml-2 bg-gray-100 rounded-lg rounded-tl-none px-4 py-2 max-w-[80%]';
+                
+                // Handle content as a string or HTML
+                if (typeof content === 'string') {
+                    // Convert URLs to clickable links
+                    content = content.replace(
+                        /(https?:\/\/[^\s]+)/g, 
+                        '<a href="$1" target="_blank" class="underline">$1</a>'
+                    );
+                    
+                    // Convert line breaks to <br>
+                    content = content.replace(/\n/g, '<br>');
+                    
+                    textDiv.innerHTML = content;
+                } else {
+                    textDiv.appendChild(content);
+                }
+                
+                iconDiv.appendChild(icon);
+                
+                if (isUser) {
+                    messageDiv.appendChild(textDiv);
+                    messageDiv.appendChild(iconDiv);
+                } else {
+                    messageDiv.appendChild(iconDiv);
+                    messageDiv.appendChild(textDiv);
+                }
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Handle sending a message
+            async function handleSendMessage() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+                
+                // Add user message to the chat
+                addMessage(message, true);
+                
+                // Clear input field
+                chatInput.value = '';
+                
+                // Show loading indicator
+                showLoadingIndicator();
+                
+                try {
+                    // Process the message with MedicalChatbot
+                    const result = await MedicalChatbot.processMessage(message);
+                    
+                    // Remove loading indicator
+                    removeLoadingIndicator();
+                    
+                    // Add bot response
+                    addMessage(result.response, false);
+                    
+                    // Show emergency alert if detected
+                    if (result.isEmergency) {
+                        EmergencyAlert.show();
+                    }
+                } catch (error) {
+                    console.error('Error processing message:', error);
+                    
+                    // Remove loading indicator
+                    removeLoadingIndicator();
+                    
+                    // Add error message
+                    addMessage("I'm sorry, I encountered an error processing your request. Please try again.", false);
+                }
+            }
+            
+            // Display suggested medical questions
+            function showSuggestedQuestions() {
+                const suggestedQuestions = [
+                    "What are common symptoms of the flu?",
+                    "How can I tell if my headache is serious?",
+                    "What should I do for a minor burn?",
+                    "Is my blood pressure in a healthy range?",
+                    "What are side effects of common pain medications?",
+                    "How can I improve my sleep quality?",
+                    "What are the symptoms of dehydration?",
+                    "How can I manage my allergies?",
+                    "What should I know about diabetes?",
+                    "How do I know if I have high cholesterol?",
+                    "What vitamins are important for immune health?"
+                ];
+                
+                const container = document.createElement('div');
+                
+                const heading = document.createElement('p');
+                heading.textContent = 'Try asking one of these medical questions:';
+                heading.className = 'font-medium mb-2';
+                container.appendChild(heading);
+                
+                const list = document.createElement('div');
+                list.className = 'flex flex-col space-y-2';
+                
+                // Randomly select 6 questions to display
+                const selectedQuestions = suggestedQuestions
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 6);
+                
+                selectedQuestions.forEach(question => {
+                    const button = document.createElement('button');
+                    button.textContent = question;
+                    button.className = 'text-left text-azure hover:text-blue-700 text-sm transition';
+                    button.onclick = () => {
+                        chatInput.value = question;
+                        chatInput.focus();
+                        
+                        // Add subtle highlight effect
+                        button.classList.add('font-medium');
+                        setTimeout(() => {
+                            button.classList.remove('font-medium');
+                        }, 300);
+                    };
+                    list.appendChild(button);
+                });
+                
+                container.appendChild(list);
+                
+                // Add to chat as a bot message
+                addMessage(container, false);
+            }
+            
+            // Clear chat history
+            function clearChat() {
+                // Confirm before clearing
+                if (chatMessages.children.length > 1 && confirm("Are you sure you want to clear the chat history?")) {
+                    // Keep only the first welcome message and remove the rest
+                    while (chatMessages.children.length > 1) {
+                        chatMessages.removeChild(chatMessages.lastChild);
+                    }
+                    // Add a confirmation message
+                    const tempMessage = document.createElement('div');
+                    tempMessage.className = 'text-center text-xs text-gray-500 my-2';
+                    tempMessage.textContent = 'Chat history cleared';
+                    chatMessages.appendChild(tempMessage);
+                    
+                    // Remove the confirmation message after 2 seconds
+                    setTimeout(() => {
+                        if (chatMessages.contains(tempMessage)) {
+                            chatMessages.removeChild(tempMessage);
+                        }
+                    }, 2000);
+                }
+            }
+            
+            // Initialize Speech Recognition
+            function handleSpeechResult(finalTranscript, interimTranscript) {
+                chatInput.value = finalTranscript + interimTranscript;
+            }
+
+            function handleSpeechEnd(finalTranscript) {
+                console.log('Speech recognition ended. Final transcript:', finalTranscript);
+                // If there's a final transcript, consider sending it
+                if (finalTranscript.trim() && !SpeechRecognitionHandler.isListening()) {
+                    // Uncomment the next line if you want to automatically send after speech stops
+                    // handleSendMessage();
+                }
+            }
+
+            function handleSpeechError(error) {
+                console.error('Speech Recognition Error:', error);
+                speechStatus.textContent = 'Mic Error';
+                speechStatus.style.color = 'red';
+            }
+
+            micButton.addEventListener('click', () => {
+                if (!SpeechRecognitionHandler.isSupported()) {
+                    alert("Speech recognition is not supported in your browser.");
+                    return;
+                }
+
+                if (SpeechRecognitionHandler.isListening()) {
+                    SpeechRecognitionHandler.stop();
+                } else {
+                    SpeechRecognitionHandler.start(handleSpeechResult, handleSpeechEnd, handleSpeechError);
+                    speechStatus.textContent = 'Listening...';
+                    speechStatus.style.color = ''; // Reset color
+                }
+            });
+            
+            // Send button click handler
+            sendButton.addEventListener('click', handleSendMessage);
+            
+            // Enter key handler
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSendMessage();
+                }
+            });
+            
+            // Suggested questions button
+            suggestedQuestionsButton.addEventListener('click', showSuggestedQuestions);
+            
+            // Clear chat button
+            clearChatButton.addEventListener('click', clearChat);
+            
+            // Focus the chat input on page load
+            chatInput.focus();
+        });
+    </script>
+    <script src="js/theme-switcher.js"></script>
+</body>
+</html>
+

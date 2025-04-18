@@ -1,0 +1,145 @@
+/* About Page Specific Styles */
+
+/* Zentorra About Container */
+.zentorra-about-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.zentorra-about-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Tagline */
+.tagline {
+  font-style: italic;
+  color: #6B7280;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+/* Highlight Text */
+.highlight {
+  color: #2563EB;
+  font-weight: 600;
+}
+
+/* About Footer */
+.about-footer {
+  margin-top: 20px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #6B7280;
+  font-style: italic;
+}
+
+/* Fade-in Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Team Member Cards */
+.team-member {
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-8px);
+}
+
+.team-member img {
+  transition: filter 0.3s ease;
+}
+
+.team-member:hover img {
+  filter: brightness(1.1);
+}
+
+/* Timeline Section */
+.timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 40px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  background-color: #E5E7EB;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #3B82F6;
+  border: 3px solid #DBEAFE;
+  left: -40px;
+  top: 5px;
+}
+
+/* Stats Section */
+.stats-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Testimonial Section */
+.testimonial {
+  position: relative;
+}
+
+.testimonial::before {
+  content: '"';
+  position: absolute;
+  top: -30px;
+  left: -10px;
+  font-family: Georgia, serif;
+  font-size: 80px;
+  color: rgba(59, 130, 246, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .timeline {
+    padding-left: 30px;
+  }
+  
+  .timeline::before {
+    left: 15px;
+  }
+  
+  .timeline-item::before {
+    left: -30px;
+  }
+} 

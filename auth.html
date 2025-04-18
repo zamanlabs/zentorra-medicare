@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Sign Up - Zentorra Medicare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-container {
+            transition: all 0.4s ease-in-out;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .form-input:focus {
+            border-color: #3b82f6;
+            border-left: 3px solid #3b82f6;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .animated-bg {
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .social-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .tab {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #3b82f6;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+        
+        .tab.active::after {
+            width: 80%;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 12px;
+            color: #9ca3af;
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+        }
+        
+        .form-error {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .form-success {
+            color: #10b981;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        /* Custom checkbox */
+        .custom-checkbox {
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: #eee;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+        
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #3b82f6;
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .custom-checkbox .checkmark:after {
+            left: 7px;
+            top: 3px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="animated-bg">
+    <!-- Header -->
+    <header class="bg-transparent">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-white hover:text-blue-100 transition-colors duration-200">
+                    <i class="fas fa-arrow-left text-xl mr-4"></i>
+                </a>
+                <h1 class="text-xl font-bold text-white">Zentorra Medicare</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-white hover:text-blue-100 transition-colors duration-200 flex items-center">
+                    <i class="fas fa-home text-xl mr-2"></i>
+                    <span class="hidden md:inline">Home</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10 min-h-[calc(100vh-80px)] flex items-center justify-center">
+        <div class="form-wrapper w-full max-w-md mx-auto">
+            <div class="form-container p-8 rounded-2xl shadow-2xl">
+                <!-- Form Header with Tabs -->
+                <div class="flex justify-center mb-8">
+                    <div id="signin-tab" class="tab active px-6 py-2 cursor-pointer">
+                        <span class="text-lg font-semibold">Sign In</span>
+                    </div>
+                    <div id="signup-tab" class="tab px-6 py-2 cursor-pointer">
+                        <span class="text-lg font-semibold">Sign Up</span>
+                    </div>
+                </div>
+                
+                <!-- Form content -->
+                <div id="form-content">
+                    <!-- Sign In Form -->
+                    <div id="signin-form" class="space-y-5">
+                        <div class="input-group">
+                            <input type="email" 
+                                   name="email" 
+                                   placeholder="Email" 
+                                   class="form-input w-full px-4 py-3 rounded-lg border bg-white outline-none text-base"
+                                   required>
+                            <span class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <div class="form-error" id="signin-email-error">Please enter a valid email address</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="password" 
+                                   name="password" 
+                                   id="signin-password"
+                                   placeholder="Password" 
+                                   class="form-input w-full px-4 py-3 rounded-lg border bg-white outline-none text-base"
+                                   required>
+                            <span class="input-icon password-toggle" data-target="signin-password">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                            <div class="form-error" id="signin-password-error">Password is required</div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <label class="custom-checkbox text-sm text-gray-700">
+                                Remember me
+                                <input type="checkbox" id="remember">
+                                <span class="checkmark"></span>
+                            </label>
+                            <a href="#" class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors">Forgot password?</a>
+                        </div>
+                        
+                        <button type="button" 
+                                id="signin-btn"
+                                class="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-400 text-white rounded-lg text-base font-medium hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                            Sign In
+                        </button>
+                        
+                        <div class="relative flex items-center mt-8 mb-6">
+                            <div class="flex-grow border-t border-gray-300"></div>
+                            <span class="flex-shrink mx-4 text-gray-600 text-sm">or continue with</span>
+                            <div class="flex-grow border-t border-gray-300"></div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-4">
+                            <button type="button" class="social-btn flex justify-center items-center py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fab fa-google text-red-500"></i>
+                            </button>
+                            <button type="button" class="social-btn flex justify-center items-center py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fab fa-facebook-f text-blue-600"></i>
+                            </button>
+                            <button type="button" class="social-btn flex justify-center items-center py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fab fa-apple text-gray-800"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Sign Up Form -->
+                    <div id="signup-form" class="hidden space-y-4">
+                        <div class="input-group">
+                            <input type="text" 
+                                   name="name" 
+                                   placeholder="Full Name" 
+                                   class="form-input w-full px-4 py-3 rounded-lg border bg-white outline-none text-base"
+                                   required>
+                            <span class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <div class="form-error" id="signup-name-error">Name is required</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="email" 
+                                   name="email" 
+                                   placeholder="Email" 
+                                   class="form-input w-full px-4 py-3 rounded-lg border bg-white outline-none text-base"
+                                   required>
+                            <span class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <div class="form-error" id="signup-email-error">Please enter a valid email address</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="password" 
+                                   name="password"
+                                   id="signup-password" 
+                                   placeholder="Password" 
+                                   class="form-input w-full px-4 py-3 rounded-lg border bg-white outline-none text-base"
+                                   required>
+                            <span class="input-icon password-toggle" data-target="signup-password">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                            <div class="form-error" id="signup-password-error">Password must be at least 8 characters</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="password" 
+                                   name="confirmPassword"
+                                   id="confirm-password" 
+                                   placeholder="Confirm Password" 
+                                   class="form-input w-full px-4 py-3 rounded-lg border bg-white outline-none text-base"
+                                   required>
+                            <span class="input-icon password-toggle" data-target="confirm-password">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                            <div class="form-error" id="confirm-password-error">Passwords do not match</div>
+                        </div>
+                        
+                        <div class="mt-2">
+                            <label class="custom-checkbox text-sm text-gray-700">
+                                I agree to the <a href="#" class="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
+                                <input type="checkbox" id="agree-terms" required>
+                                <span class="checkmark"></span>
+                            </label>
+                            <div class="form-error" id="terms-error">You must agree to the terms</div>
+                        </div>
+                        
+                        <button type="button"
+                                id="signup-btn"
+                                class="w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-400 text-white rounded-lg text-base font-medium hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 mt-4">
+                            Create Account
+                        </button>
+                        
+                        <div class="relative flex items-center mt-6 mb-6">
+                            <div class="flex-grow border-t border-gray-300"></div>
+                            <span class="flex-shrink mx-4 text-gray-600 text-sm">or sign up with</span>
+                            <div class="flex-grow border-t border-gray-300"></div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-4">
+                            <button type="button" class="social-btn flex justify-center items-center py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fab fa-google text-red-500"></i>
+                            </button>
+                            <button type="button" class="social-btn flex justify-center items-center py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fab fa-facebook-f text-blue-600"></i>
+                            </button>
+                            <button type="button" class="social-btn flex justify-center items-center py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                                <i class="fab fa-apple text-gray-800"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signinTab = document.getElementById('signin-tab');
+            const signupTab = document.getElementById('signup-tab');
+            const signinForm = document.getElementById('signin-form');
+            const signupForm = document.getElementById('signup-form');
+            const signinBtn = document.getElementById('signin-btn');
+            const signupBtn = document.getElementById('signup-btn');
+            
+            // Toggle password visibility
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const passwordInput = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+            
+            // Switch between sign in and sign up forms
+            signinTab.addEventListener('click', function() {
+                signinTab.classList.add('active');
+                signupTab.classList.remove('active');
+                signinForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+            });
+            
+            signupTab.addEventListener('click', function() {
+                signupTab.classList.add('active');
+                signinTab.classList.remove('active');
+                signupForm.classList.remove('hidden');
+                signinForm.classList.add('hidden');
+            });
+            
+            // Form validation
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            function validatePassword(password) {
+                return password.length >= 8;
+            }
+            
+            function showError(inputEl, errorId, show) {
+                const errorEl = document.getElementById(errorId);
+                if (show) {
+                    inputEl.classList.add('border-red-500');
+                    errorEl.style.display = 'block';
+                } else {
+                    inputEl.classList.remove('border-red-500');
+                    errorEl.style.display = 'none';
+                }
+            }
+            
+            // Sign in validation and submission
+            signinBtn.addEventListener('click', function() {
+                let isValid = true;
+                const emailInput = signinForm.querySelector('input[name="email"]');
+                const passwordInput = signinForm.querySelector('input[name="password"]');
+                
+                if (!validateEmail(emailInput.value)) {
+                    showError(emailInput, 'signin-email-error', true);
+                    isValid = false;
+                } else {
+                    showError(emailInput, 'signin-email-error', false);
+                }
+                
+                if (passwordInput.value.trim() === '') {
+                    showError(passwordInput, 'signin-password-error', true);
+                    isValid = false;
+                } else {
+                    showError(passwordInput, 'signin-password-error', false);
+                }
+                
+                if (isValid) {
+                    // Show loading state
+                    signinBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Signing In...';
+                    signinBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
+            });
+            
+            // Sign up validation and submission
+            signupBtn.addEventListener('click', function() {
+                let isValid = true;
+                const nameInput = signupForm.querySelector('input[name="name"]');
+                const emailInput = signupForm.querySelector('input[name="email"]');
+                const passwordInput = signupForm.querySelector('input[name="password"]');
+                const confirmPasswordInput = signupForm.querySelector('input[name="confirmPassword"]');
+                const agreeTerms = document.getElementById('agree-terms');
+                
+                if (nameInput.value.trim() === '') {
+                    showError(nameInput, 'signup-name-error', true);
+                    isValid = false;
+                } else {
+                    showError(nameInput, 'signup-name-error', false);
+                }
+                
+                if (!validateEmail(emailInput.value)) {
+                    showError(emailInput, 'signup-email-error', true);
+                    isValid = false;
+                } else {
+                    showError(emailInput, 'signup-email-error', false);
+                }
+                
+                if (!validatePassword(passwordInput.value)) {
+                    showError(passwordInput, 'signup-password-error', true);
+                    isValid = false;
+                } else {
+                    showError(passwordInput, 'signup-password-error', false);
+                }
+                
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    showError(confirmPasswordInput, 'confirm-password-error', true);
+                    isValid = false;
+                } else {
+                    showError(confirmPasswordInput, 'confirm-password-error', false);
+                }
+                
+                if (!agreeTerms.checked) {
+                    document.getElementById('terms-error').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('terms-error').style.display = 'none';
+                }
+                
+                if (isValid) {
+                    // Show loading state
+                    signupBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creating Account...';
+                    signupBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
+            });
+            
+            // Form input validation on input
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const name = this.name;
+                    const value = this.value;
+                    
+                    if (name === 'email') {
+                        const formType = this.closest('#signin-form') ? 'signin' : 'signup';
+                        showError(this, `${formType}-email-error`, !validateEmail(value) && value !== '');
+                    } else if (name === 'password') {
+                        const formType = this.closest('#signin-form') ? 'signin' : 'signup';
+                        if (formType === 'signup') {
+                            showError(this, 'signup-password-error', !validatePassword(value) && value !== '');
+                            
+                            // Also check confirm password if it has a value
+                            const confirmPassword = document.getElementById('confirm-password');
+                            if (confirmPassword.value !== '') {
+                                showError(confirmPassword, 'confirm-password-error', confirmPassword.value !== value);
+                            }
+                        }
+                    } else if (name === 'confirmPassword') {
+                        const password = document.getElementById('signup-password').value;
+                        showError(this, 'confirm-password-error', password !== value && value !== '');
+                    }
+                });
+            });
+            
+            // Terms checkbox validation
+            document.getElementById('agree-terms').addEventListener('change', function() {
+                document.getElementById('terms-error').style.display = this.checked ? 'none' : 'block';
+            });
+        });
+    </script>
+    <script src="js/theme-switcher.js"></script>
+</body>
+</html> 
+

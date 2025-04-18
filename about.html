@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Zentorra Medicare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/azure-theme.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="menu-toggle" class="text-white hover:text-blue-100 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <h1 class="ml-4 text-xl font-bold">Zentorra Medicare</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="auth.html" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Zentorra About Section (from ZentorraAbout) -->
+        <section class="zentorra-about-container fade-in mb-8">
+            <h2 class="text-2xl font-bold mb-2 text-gray-800 bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">About Zentorra</h2>
+            <div class="tagline zentorra-tagline">"Building Tomorrow Today"</div>
+            <p class="text-gray-700 mb-4">
+                <span class="highlight">Zentorra</span> empowers businesses and individuals through cutting-edge 
+                <span class="highlight">technology, creativity, and social impact</span>. Our expert team drives digital 
+                transformation by delivering tailored solutions in web and app development, UI/UX design, and tech consultancy.
+            </p>
+            <p class="text-gray-700 mb-4">
+                From eye-catching <span class="highlight">graphics and brand design</span> to hands-on 
+                <span class="highlight">online learning and workshops</span>, Zentorra ensures innovation with quality and efficiency. 
+                We also assist in solving both software and hardware challenges for a smarter tomorrow.
+            </p>
+            <div class="about-footer">— The Zentorra Team</div>
+        </section>
+
+        <!-- About Medicare Section -->
+        <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">About Zentorra Medicare</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Mission Statement -->
+                <div class="bg-blue-50 p-6 rounded-lg fade-in">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-bullseye text-azure text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-800">Our Mission</h3>
+                    </div>
+                    <p class="text-gray-600">Zentorra Medicare is dedicated to revolutionizing healthcare accessibility through innovative technology solutions. We aim to empower individuals to take control of their health journey with our comprehensive digital health platform.</p>
+                </div>
+
+                <!-- Vision -->
+                <div class="bg-green-50 p-6 rounded-lg fade-in" style="transition-delay: 200ms;">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-eye text-green-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gray-800">Our Vision</h3>
+                    </div>
+                    <p class="text-gray-600">To create a world where quality healthcare is accessible to everyone, everywhere, through seamless integration of technology and medical expertise.</p>
+                </div>
+            </div>
+            
+            <!-- Company Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
+                <div class="bg-blue-50 p-4 rounded-lg text-center stats-card fade-in" style="transition-delay: 100ms;">
+                    <i class="fas fa-users text-azure text-2xl mb-2"></i>
+                    <div class="text-3xl font-bold text-gray-800 stats-counter" data-target="10000">0</div>
+                    <p class="text-sm text-gray-600">Active Users</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg text-center stats-card fade-in" style="transition-delay: 200ms;">
+                    <i class="fas fa-hospital text-green-500 text-2xl mb-2"></i>
+                    <div class="text-3xl font-bold text-gray-800 stats-counter" data-target="250">0</div>
+                    <p class="text-sm text-gray-600">Partner Hospitals</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg text-center stats-card fade-in" style="transition-delay: 300ms;">
+                    <i class="fas fa-user-doctor text-purple-500 text-2xl mb-2"></i>
+                    <div class="text-3xl font-bold text-gray-800 stats-counter" data-target="500">0</div>
+                    <p class="text-sm text-gray-600">Healthcare Professionals</p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-lg text-center stats-card fade-in" style="transition-delay: 400ms;">
+                    <i class="fas fa-globe text-indigo-500 text-2xl mb-2"></i>
+                    <div class="text-3xl font-bold text-gray-800 stats-counter" data-target="25">0</div>
+                    <p class="text-sm text-gray-600">Countries Served</p>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="mt-8 fade-in" style="transition-delay: 300ms;">
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Key Features</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors duration-300">
+                        <i class="fas fa-chart-line text-azure text-2xl mb-3"></i>
+                        <h4 class="font-semibold mb-2">Health Tracking</h4>
+                        <p class="text-sm text-gray-600">Monitor your health metrics and track symptoms over time.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-green-300 transition-colors duration-300">
+                        <i class="fas fa-comment-medical text-green-500 text-2xl mb-3"></i>
+                        <h4 class="font-semibold mb-2">AI Assistant</h4>
+                        <p class="text-sm text-gray-600">Get instant health guidance from our AI-powered assistant.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-purple-300 transition-colors duration-300">
+                        <i class="fas fa-video text-purple-500 text-2xl mb-3"></i>
+                        <h4 class="font-semibold mb-2">Telemedicine</h4>
+                        <p class="text-sm text-gray-600">Connect with healthcare providers from the comfort of your home.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Company History Timeline -->
+            <div class="mt-10 fade-in" style="transition-delay: 400ms;">
+                <h3 class="text-xl font-semibold mb-6 text-gray-800">Our Journey</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4 class="font-semibold text-azure">2021</h4>
+                        <p class="text-gray-700">Zentorra Medicare was founded with a vision to make healthcare accessible to all.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 class="font-semibold text-azure">2022</h4>
+                        <p class="text-gray-700">Launched our first mobile application for health tracking and symptom monitoring.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 class="font-semibold text-azure">2023</h4>
+                        <p class="text-gray-700">Integrated AI technology for personalized health recommendations and virtual assistance.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 class="font-semibold text-azure">2024</h4>
+                        <p class="text-gray-700">Expanded telemedicine services and partnered with major healthcare providers worldwide.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4 class="font-semibold text-azure">2025</h4>
+                        <p class="text-gray-700">Reached milestone of 10,000 active users and continue to grow our health ecosystem.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team -->
+            <div class="team-section mt-10">
+                <h3 class="text-xl font-semibold mb-4">Our Team</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="team-member bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="bg-blue-100 h-32 flex items-center justify-center">
+                            <i class="fas fa-user-md text-azure text-5xl"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-lg">Dr. Sarah Johnson</h4>
+                            <p class="text-gray-600 text-sm">Chief Medical Officer</p>
+                            <p class="text-gray-500 text-sm mt-2">Leading our medical team with over 15 years of experience in digital health solutions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="bg-green-100 h-32 flex items-center justify-center">
+                            <i class="fas fa-laptop-code text-green-500 text-5xl"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-lg">Mark Williams</h4>
+                            <p class="text-gray-600 text-sm">Chief Technology Officer</p>
+                            <p class="text-gray-500 text-sm mt-2">Driving innovation in healthcare technology with expertise in AI and machine learning.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="bg-purple-100 h-32 flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-purple-500 text-5xl"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-lg">Dr. Emily Chen</h4>
+                            <p class="text-gray-600 text-sm">Patient Experience Director</p>
+                            <p class="text-gray-500 text-sm mt-2">Focused on creating seamless and compassionate healthcare journeys for all patients.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="bg-orange-100 h-32 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-orange-500 text-5xl"></i>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-lg">James Rodriguez</h4>
+                            <p class="text-gray-600 text-sm">Security & Privacy Lead</p>
+                            <p class="text-gray-500 text-sm mt-2">Ensuring the highest standards of data protection and security for all user information.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial -->
+            <div class="mt-10 fade-in" style="transition-delay: 600ms;">
+                <h3 class="text-xl font-semibold mb-6 text-gray-800">What Our Users Say</h3>
+                <div class="bg-blue-50 p-6 rounded-lg testimonial">
+                    <p class="text-gray-700 italic mb-4">
+                        "Zentorra Medicare has transformed how I manage my health. The app is intuitive, the reminders are helpful, 
+                        and being able to connect with healthcare professionals remotely has saved me countless hours."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gray-300 rounded-full mr-3"></div>
+                        <div>
+                            <p class="font-medium">James Wilson</p>
+                            <p class="text-sm text-gray-600">User since 2023</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Side Panel Navigation -->
+    <div id="side-panel" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
+        <div class="p-4 border-b bg-gradient-to-r from-blue-600 to-cyan-400">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Zentorra Medicare</h2>
+                <button id="close-menu" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <nav class="p-4">
+            <ul class="space-y-3">
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="index.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-home w-6"></i>
+                        <span class="ml-2">Dashboard</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-user w-6"></i>
+                        <span class="ml-2">Profile</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="symptom-tracker.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-chart-simple w-6"></i>
+                        <span class="ml-2">Symptom Tracker</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="medication.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-pills w-6"></i>
+                        <span class="ml-2">Medication</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="telemedicine.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-video w-6"></i>
+                        <span class="ml-2">Telemedicine</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="contact.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-address-book w-6"></i>
+                        <span class="ml-2">Contact</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="emergency.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-hospital w-6"></i>
+                        <span class="ml-2">Emergency Services</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="chat.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-message w-6"></i>
+                        <span class="ml-2">AI Assistant</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md bg-blue-50">
+                    <a href="about.html" class="flex items-center text-azure">
+                        <i class="fas fa-circle-info w-6"></i>
+                        <span class="ml-2">About</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/about.js"></script>
+    <script src="js/theme-switcher.js"></script>
+</body>
+</html> 
+

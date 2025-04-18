@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemedicine Services - Zentorra Medicare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/azure-theme.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header>
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <button id="menu-toggle" class="text-white hover:text-blue-100 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <h1 class="ml-4 text-xl font-bold">Zentorra Medicare</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-white hover:text-blue-100">
+                    <i class="fas fa-home text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+                <h2 class="text-2xl font-bold text-gray-800 bg-gradient-azure bg-clip-text text-transparent">Telemedicine Services</h2>
+                <span class="ml-3 bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Virtual Care</span>
+            </div>
+            <button id="schedule-appointment" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center">
+                <i class="fas fa-calendar-plus mr-2"></i>
+                Schedule Appointment
+            </button>
+        </div>
+
+        <!-- Introduction Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-2/3 md:pr-6">
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800 pb-2 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">Consult with Your Doctor from Home</h3>
+                    <p class="text-gray-700 mb-3">
+                        Zentorra Medicare offers convenient and secure telemedicine appointments, allowing you to connect with our healthcare professionals from the comfort of your home. Save time, reduce travel, and get the care you need, when you need it.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        Our virtual visits are suitable for follow-up appointments, medication management, consultations for non-emergency conditions, mental health support, and more.
+                    </p>
+                    <a href="contact.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md inline-flex items-center">
+                        <i class="fas fa-calendar-check mr-2"></i> Schedule a Virtual Visit
+                    </a>
+                </div>
+                <div class="md:w-1/3 mt-4 md:mt-0">
+                    <img src="images/telemedicine-illustration.svg" alt="Telemedicine Illustration" class="w-full h-auto rounded-lg">
+                    <!-- Placeholder - Needs an actual SVG file -->
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">How Telemedicine Works</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="rounded-full bg-blue-100 p-4 inline-block mb-3">
+                        <i class="fas fa-calendar-days text-azure text-2xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2">1. Schedule Your Visit</h4>
+                    <p class="text-sm text-gray-600">Book a virtual appointment online or by calling our office. Choose a time that works best for you.</p>
+                </div>
+                <div class="text-center">
+                    <div class="rounded-full bg-green-100 p-4 inline-block mb-3">
+                        <i class="fas fa-laptop-medical text-green-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2">2. Prepare for Your Call</h4>
+                    <p class="text-sm text-gray-600">You'll receive a secure link via email. Ensure you have a stable internet connection and a device with a camera and microphone.</p>
+                </div>
+                <div class="text-center">
+                    <div class="rounded-full bg-purple-100 p-4 inline-block mb-3">
+                        <i class="fas fa-video text-purple-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-medium mb-2">3. Connect with Your Doctor</h4>
+                    <p class="text-sm text-gray-600">Click the link at your appointment time to join the secure video call with your healthcare provider.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Specialties -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">Services Available via Telemedicine</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-stethoscope text-azure mr-2"></i>
+                    <span class="text-sm">General Consultations</span>
+                </div>
+                <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-prescription-bottle text-green-500 mr-2"></i>
+                    <span class="text-sm">Medication Refills</span>
+                </div>
+                <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-notes-medical text-red-500 mr-2"></i>
+                    <span class="text-sm">Follow-up Visits</span>
+                </div>
+                <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-brain text-purple-500 mr-2"></i>
+                    <span class="text-sm">Mental Health</span>
+                </div>
+                <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-allergies text-yellow-500 mr-2"></i>
+                    <span class="text-sm">Allergy Consults</span>
+                </div>
+                <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-leaf text-teal-500 mr-2"></i>
+                    <span class="text-sm">Wellness Coaching</span>
+                </div>
+                 <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-vial text-indigo-500 mr-2"></i>
+                    <span class="text-sm">Lab Result Review</span>
+                </div>
+                 <div class="flex items-center p-3 bg-gray-50 rounded-md">
+                    <i class="fas fa-user-doctor text-pink-500 mr-2"></i>
+                    <span class="text-sm">Minor Illnesses</span>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-4">*Note: Telemedicine is not suitable for emergencies or conditions requiring a physical examination. Call 911 for emergencies.</p>
+        </div>
+
+        <!-- Technical Requirements -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">What You Need</h3>
+            <ul class="space-y-3">
+                <li class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                    <span>A smartphone, tablet, or computer with a camera and microphone.</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                    <span>A stable internet connection (Wi-Fi or cellular data).</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                    <span>A private, quiet space for your appointment.</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                    <span>An up-to-date web browser (Chrome, Firefox, Safari, Edge).</span>
+                </li>
+            </ul>
+            <p class="text-sm text-gray-600 mt-4">If you have technical difficulties, please call our support line at (555) 123-4567.</p>
+        </div>
+    </main>
+
+    <!-- Side Panel Navigation -->
+    <div id="side-panel" class="fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-4 border-b bg-gradient-azure">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-white">Zentorra Medicare</h2>
+                <button id="close-menu" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <nav class="p-4">
+            <ul class="space-y-3">
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="index.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-home w-6"></i>
+                        <span class="ml-2">Dashboard</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-user w-6"></i>
+                        <span class="ml-2">Profile</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="symptom-tracker.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-chart-simple w-6"></i>
+                        <span class="ml-2">Symptom Tracker</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="medication.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-pills w-6"></i>
+                        <span class="ml-2">Medication</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md bg-blue-50">
+                    <a href="telemedicine.html" class="flex items-center text-azure">
+                        <i class="fas fa-video w-6"></i>
+                        <span class="ml-2">Telemedicine</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="contact.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-address-book w-6"></i>
+                        <span class="ml-2">Contact</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="emergency.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-hospital w-6"></i>
+                        <span class="ml-2">Emergency Services</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="chat.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-message w-6"></i>
+                        <span class="ml-2">AI Assistant</span>
+                    </a>
+                </li>
+                <li class="p-2 rounded-md hover:bg-blue-50">
+                    <a href="about.html" class="flex items-center text-gray-700 hover:text-azure">
+                        <i class="fas fa-circle-info w-6"></i>
+                        <span class="ml-2">About</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-6 pt-6 border-t">
+                <ul class="space-y-3">
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-gear w-6"></i>
+                            <span class="ml-2">Settings</span>
+                        </a>
+                    </li>
+                    <li class="p-2 rounded-md hover:bg-blue-50">
+                        <a href="#" class="flex items-center text-gray-700 hover:text-azure">
+                            <i class="fas fa-right-from-bracket w-6"></i>
+                            <span class="ml-2">Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/theme-switcher.js"></script>
+</body>
+</html> 
+
